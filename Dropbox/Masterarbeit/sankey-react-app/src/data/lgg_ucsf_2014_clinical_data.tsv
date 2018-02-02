@@ -1,0 +1,62 @@
+Patient ID	Sample ID	Non-silent mutations in TP53, ATRX, CIC, FUBP1	Cancer Type Detailed	Diagnosis Age	IDH1 Mutation	MGMT Status	Neoplasm Histologic Grade	Cancer Studies	Note	Oncotree Code	Overall Survival (Months)	Overall Survival Status	1p/19q Status	Cancer Type	Sample Type	Sex
+P01	P01_Rec	TP53, ATRX	Glioblastoma	28	R132H	Methylated	IV	lgg_ucsf_2014		GB	58	DECEASED	19q deletion	Glioma	Recurrence	Male
+P02	P02_Rec	TP53	Anaplastic Astrocytoma	26	R132H	Unmethylated	III	lgg_ucsf_2014	Patient lost follow up	AASTR	5		19q deletion	Glioma	Recurrence	Female
+P04	P04_Rec3	TP53	Anaplastic Astrocytoma	22	R132C	Unknown	III	lgg_ucsf_2014		AASTR	61	DECEASED	Intact	Glioma	Recurrence	Male
+P05	P05_Rec	TP53, ATRX	Glioblastoma	39	R132H	Methylated	IV	lgg_ucsf_2014		GB	74	DECEASED	Intact	Glioma	Recurrence	Female
+P06	P06_Rec	TP53, ATRX	Astrocytoma	22	R132H	Methylated	II	lgg_ucsf_2014		ASTR	87	DECEASED	Intact	Glioma	Recurrence	Male
+P07	P07_Rec	TP53, ATRX	Astrocytoma	30	R132H	Unknown	II	lgg_ucsf_2014		ASTR	148	DECEASED	Intact	Glioma	Recurrence	Male
+P08	P08_Rec	TP53, ATRX	Glioblastoma	44	R132H	Unknown	IV	lgg_ucsf_2014		GB	103	DECEASED	19q deletion	Glioma	Recurrence	Male
+P09	P09_Rec	TP53	Glioblastoma	28	R132H	Methylated	IV	lgg_ucsf_2014		GB	45	DECEASED	Intact	Glioma	Recurrence	Male
+P10	P10_Rec	TP53, ATRX	Glioblastoma	41	R132H	Methylated	IV	lgg_ucsf_2014		GB	44	DECEASED	Intact	Glioma	Recurrence	Female
+P11	P11_Rec	TP53, ATRX	Oligoastrocytoma	30	R132H	Methylated	II	lgg_ucsf_2014		OAST	186	DECEASED	Intact	Glioma	Recurrence	Female
+P12	P12_Rec	TP53, ATRX	Anaplastic Astrocytoma	35	R132H	Unknown	III	lgg_ucsf_2014		AASTR	82	LIVING	Intact	Glioma	Recurrence	Male
+P13	P13_Rec	TP53, ATRX	Oligoastrocytoma	24	R132G	Unmethylated	II	lgg_ucsf_2014		OAST	106	DECEASED	Intact	Glioma	Recurrence	Male
+P15	P15_Rec	CIC	Oligoastrocytoma	38	R132H	Unknown	II	lgg_ucsf_2014		OAST	143	LIVING	Co-deletion	Glioma	Recurrence	Female
+P16	P16_Rec	TP53, ATRX	Astrocytoma	35	R132H	Methylated	II	lgg_ucsf_2014		ASTR	38	DECEASED	Intact	Glioma	Recurrence	Female
+P17	P17_Rec1_D	TP53, ATRX	Glioblastoma	27	R132H	Unmethylated	IV	lgg_ucsf_2014		GB	59	LIVING	Intact	Glioma	Recurrence	Male
+P18	P18_Rec	TP53, ATRX	Glioblastoma	49	R132H	Methylated	IV	lgg_ucsf_2014		GB	106	LIVING	Intact	Glioma	Recurrence	Male
+P21	P21_Rec	TP53, ATRX	Glioblastoma	27	R132H	Methylated	IV	lgg_ucsf_2014		GB	35	DECEASED	Intact	Glioma	Recurrence	Male
+P24	P24_Rec2	TP53, ATRX	Glioblastoma	34	R132H	Methylated	IV	lgg_ucsf_2014		GB	109	DECEASED	Intact	Glioma	Recurrence	Male
+P25	P25_Rec	ATRX	Glioblastoma	39	R132H	Methylated	IV	lgg_ucsf_2014		GB	42	LIVING	Intact	Glioma	Recurrence	Male
+P26	P26_Rec1_B	TP53, ATRX	Anaplastic Astrocytoma	36	R132H	Methylated	III	lgg_ucsf_2014		AASTR	47	LIVING	Intact	Glioma	Recurrence	Female
+P27	P27_Rec1_B	TP53, ATRX	Anaplastic Astrocytoma	56	R132H	Methylated	III	lgg_ucsf_2014		AASTR	54	LIVING	Intact	Glioma	Recurrence	Male
+P28	P28_Rec	TP53, ATRX	Anaplastic Astrocytoma	30	R132H	Methylated	III	lgg_ucsf_2014		AASTR	137	LIVING	19q deletion	Glioma	Recurrence	Male
+P29	P29_Rec	TP53, ATRX	Anaplastic Astrocytoma	52	R132H	Methylated	III	lgg_ucsf_2014		AASTR	109	DECEASED	Intact	Glioma	Recurrence	Male
+P01	P01_Pri	TP53, ATRX	Astrocytoma		R132H	Unmethylated	II	lgg_ucsf_2014		ASTR			Intact	Glioma	Primary	
+P02	P02_Pri	TP53	Oligoastrocytoma		R132H	Methylated	II	lgg_ucsf_2014	Patient lost follow up	OAST			19q deletion	Glioma	Primary	
+P04	P04_Pri	TP53	Astrocytoma		R132C	Unknown	II	lgg_ucsf_2014		ASTR			Intact	Glioma	Primary	
+P04	P04_Rec1	TP53	Anaplastic Astrocytoma		R132C	Unknown	III	lgg_ucsf_2014		AASTR			Intact	Glioma	Recurrence	
+P04	P04_Rec2	TP53	Anaplastic Astrocytoma		R132C	Unknown	III	lgg_ucsf_2014		AASTR			Intact	Glioma	Recurrence	
+P05	P05_Pri	TP53, ATRX	Astrocytoma		R132H	Methylated	II	lgg_ucsf_2014		ASTR			Intact	Glioma	Primary	
+P06	P06_Pri		Astrocytoma		R132H	Unmethylated	II	lgg_ucsf_2014		ASTR			Intact	Glioma	Primary	
+P07	P07_Pri	TP53, ATRX	Astrocytoma		R132H	Unknown	II	lgg_ucsf_2014		ASTR			Intact	Glioma	Primary	
+P08	P08_Pri	TP53, ATRX	Oligoastrocytoma		R132H	Unknown	II	lgg_ucsf_2014		OAST			Intact	Glioma	Primary	
+P09	P09_Pri	TP53	Astrocytoma		R132H	Methylated	II	lgg_ucsf_2014		ASTR			Intact	Glioma	Primary	
+P10	P10_Pri	TP53, ATRX	Astrocytoma		R132H	Methylated	II	lgg_ucsf_2014		ASTR			Intact	Glioma	Primary	
+P11	P11_Pri	TP53, ATRX	Oligoastrocytoma		R132H	Methylated	II	lgg_ucsf_2014		OAST			Intact	Glioma	Primary	
+P12	P12_Pri	TP53, ATRX	Astrocytoma		R132H	Unknown	II	lgg_ucsf_2014		ASTR			Intact	Glioma	Primary	
+P13	P13_Pri	TP53, ATRX	Oligoastrocytoma		R132G	Unmethylated	II	lgg_ucsf_2014		OAST			Intact	Glioma	Primary	
+P15	P15_Pri		Oligoastrocytoma		R132H	Unknown	II	lgg_ucsf_2014		OAST			Co-deletion	Glioma	Primary	
+P16	P16_Pri	TP53, ATRX	Astrocytoma		R132H	Methylated	II	lgg_ucsf_2014		ASTR			Intact	Glioma	Primary	
+P17	P17_Pri_A	TP53, ATRX	Oligodendroglioma		R132H	Methylated	II	lgg_ucsf_2014		ODG			Intact	Glioma	Primary	
+P17	P17_Pri_B	TP53, ATRX	Oligodendroglioma		R132H	Methylated	II	lgg_ucsf_2014		ODG			Intact	Glioma	Primary	
+P17	P17_Pri_C	TP53, ATRX	Oligodendroglioma		R132H	Methylated	II	lgg_ucsf_2014		ODG			Intact	Glioma	Primary	
+P17	P17_Rec1_A	TP53, ATRX	Glioblastoma		R132H	Unmethylated	IV	lgg_ucsf_2014		GB			Intact	Glioma	Recurrence	
+P17	P17_Rec1_B	TP53, ATRX	Glioblastoma		R132H	Unmethylated	IV	lgg_ucsf_2014		GB			Intact	Glioma	Recurrence	
+P17	P17_Rec1_C	TP53, ATRX	Glioblastoma		R132H	Unmethylated	IV	lgg_ucsf_2014		GB			Intact	Glioma	Recurrence	
+P18	P18_Pri_A	TP53, ATRX	Oligoastrocytoma		R132H	Methylated	II	lgg_ucsf_2014		OAST			Intact	Glioma	Primary	
+P18	P18_Pri_B	TP53, ATRX	Oligoastrocytoma		R132H	Methylated	II	lgg_ucsf_2014		OAST			Intact	Glioma	Primary	
+P18	P18_Pri_C	TP53, ATRX	Oligoastrocytoma		R132H	Methylated	II	lgg_ucsf_2014		OAST			Intact	Glioma	Primary	
+P18	P18_Pri_D	TP53, ATRX	Oligoastrocytoma		R132H	Methylated	II	lgg_ucsf_2014		OAST			Intact	Glioma	Primary	
+P21	P21_Pri	TP53, ATRX	Oligoastrocytoma		R132H	Methylated	II	lgg_ucsf_2014		OAST			19q deletion	Glioma	Primary	
+P24	P24_Pri	TP53, ATRX	Astrocytoma		R132H	Unmethylated	II	lgg_ucsf_2014		ASTR			Intact	Glioma	Primary	
+P24	P24_Rec1	TP53, ATRX	Astrocytoma		R132H	Unmethylated	II	lgg_ucsf_2014		ASTR			Intact	Glioma	Recurrence	
+P25	P25_Pri	ATRX	Astrocytoma		R132H	Methylated	II	lgg_ucsf_2014		ASTR			Intact	Glioma	Primary	
+P26	P26_Pri_A	TP53, ATRX	Astrocytoma		R132H	Methylated	II	lgg_ucsf_2014		ASTR			Intact	Glioma	Primary	
+P26	P26_Pri_B	TP53, ATRX	Astrocytoma		R132H	Methylated	II	lgg_ucsf_2014		ASTR			Intact	Glioma	Primary	
+P26	P26_Rec1_A	TP53, ATRX	Anaplastic Astrocytoma		R132H	Methylated	III	lgg_ucsf_2014		AASTR			Intact	Glioma	Recurrence	
+P27	P27_Pri_A	TP53, ATRX	Astrocytoma		R132H	Methylated	II	lgg_ucsf_2014		ASTR			Intact	Glioma	Primary	
+P27	P27_Pri_B	TP53, ATRX	Astrocytoma		R132H	Methylated	II	lgg_ucsf_2014		ASTR			Intact	Glioma	Primary	
+P27	P27_Rec1_A	TP53, ATRX	Anaplastic Astrocytoma		R132H	Methylated	III	lgg_ucsf_2014		AASTR			Intact	Glioma	Recurrence	
+P28	P28_Pri	TP53, ATRX	Astrocytoma		R132H	Methylated	II	lgg_ucsf_2014		ASTR			19q deletion	Glioma	Primary	
+P29	P29_Pri	TP53, ATRX	Astrocytoma		R132H	Methylated	II	lgg_ucsf_2014		ASTR			Intact	Glioma	Primary	

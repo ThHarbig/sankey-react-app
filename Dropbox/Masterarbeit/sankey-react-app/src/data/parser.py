@@ -1,5 +1,6 @@
 import csv
 import json
+
 import requests
 
 
@@ -29,6 +30,42 @@ def parseData(data):
         for i in range(1, len(header)):
             patients[caseID[0:seperators[0]]][int(index)][header[i]] = row[i]
     return [patients,header]
+
+
+def parseGeneData(data):
+    rd = csv.reader(data.splitlines(), delimiter="\t", quotechar='"')
+    patients={}
+    header=[]
+    next(rd,None)
+    next(rd,None)
+    samples=next(rd,None)
+    samples=samples[2:len(samples)]
+    count=0
+    for sample in samples:
+        seperators = [pos for pos, char in enumerate(sample) if char == "_"]
+        if not sample[0:seperators[0]] in patients:
+            patients[sample[0:seperators[0]]] = {}
+        index = 1
+        if len(seperators) == 2:
+            timepoint = sample[seperators[0] + 1:seperators[1]]
+            index = sample[seperators[1] - 1]
+        else:
+            timepoint = sample[seperators[0] + 1:len(samples)]
+            if sample[len(sample) - 1].isdigit():
+                index = sample[len(sample) - 1]
+        if timepoint == "Pri":
+            patients[sample[0:seperators[0]]][0] = {"timepoint": timepoint,"csvIndex":count+2}
+            index = 0
+        else:
+            patients[sample[0:seperators[0]]][int(index)] = {"timepoint": timepoint, "csvIndex":count+2}
+        count+=1
+    for row in rd:
+        for patient in patients:
+            for timepoint in patients[patient]:
+                patients[patient][timepoint][row[1]]=row[patients[patient][timepoint]["csvIndex"]]
+        header.append(row[1])
+    return patients,header
+
 
 
 def getCounts(patients,category):
@@ -79,19 +116,22 @@ def loadData():
     return r.text
 
 def loadGeneData():
-    cmd="cmd=getProfileData&case_set_id=lgg_ucsf_2014_all&genetic_profile_id=lgg_ucsf_2014_mutations&gene_list=TP53"
+    cmd="cmd=getProfileData&case_set_id=lgg_ucsf_2014_all&genetic_profile_id=lgg_ucsf_2014_mutations&gene_list=TP53,CDKN2A"
     r = requests.get("http://www.cbioportal.org/webservice.do?"+cmd)
-    print(r.text)
+    return r.text
 
 def main():
-    data=loadData()
-    loadGeneData()
-    patients = parseData(data)
-    categories=["CANCER_TYPE_DETAILED","GRADE","IDH1_MUTATION","MGMT_STATUS","NON_SILENT_MUT_TP53_ATRX_CIC_FUBP1","STATUS_1P_19Q"]
+    clincalData=loadData()
+    #geneData=loadGeneData()
+    patientsClincal = parseData(clincalData)
+    #patientsGenes=parseGeneData(geneData)
+    clinicalCategories=["CANCER_TYPE_DETAILED","GRADE","IDH1_MUTATION","MGMT_STATUS","NON_SILENT_MUT_TP53_ATRX_CIC_FUBP1","STATUS_1P_19Q"]
     counters=[]
-    for category in categories:
-        counters.append(getCounts(patients[0],category))
-    writeFile(counters,categories)
+    for category in clinicalCategories:
+        counters.append(getCounts(patientsClincal[0],category))
+    #for gene in patientsGenes[1]:
+    #    counters.append(getCounts(patientsGenes[0],gene))
+    writeFile(counters,clinicalCategories)
 
 
 if __name__ == "__main__":

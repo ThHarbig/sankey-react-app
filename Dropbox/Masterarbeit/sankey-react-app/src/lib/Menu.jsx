@@ -29,9 +29,9 @@ const Menu = observer(class Menu extends React.Component {
         return data.map(function (d, i) {
             return (
                 <div key={d.category} className="menu">
-                    <label > {d.category} <input type="radio" style={{horizontalAlign: "middle"}} id="mc"
-                                                 name="property" value={d.category}
-                                                 onClick={() => that.handleClick(d.category)}/></label>
+                    <label> {d.category} <input type="radio" style={{horizontalAlign: "middle"}} id="mc"
+                                                name="property" value={d.category}
+                                                onClick={() => that.handleClick(d.category)}/></label>
                 </div>
             )
         });
@@ -42,7 +42,7 @@ const Menu = observer(class Menu extends React.Component {
             <div>
                 <form>
                     <p>Choose property</p>
-                    <fieldset >
+                    <fieldset>
                         {this.getRadioButtons(this.props.options)}
                     </fieldset>
                 </form>

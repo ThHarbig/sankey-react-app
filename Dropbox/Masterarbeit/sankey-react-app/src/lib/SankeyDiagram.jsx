@@ -1,13 +1,13 @@
-import React from'react';
+import React from 'react';
 import * as d3 from 'd3';
-import { observer } from 'mobx-react';
+import {observer} from 'mobx-react';
 import {Sankey} from 'react-vis';
 import ReactMixins from "./utils/ReactMixins.js";
 import ToolTip from "./ToolTip.jsx";
 import '../../node_modules/react-vis/dist/style.css';
 
 
-const SankeyDiagram=observer(class SankeyDiagram extends React.Component {
+const SankeyDiagram = observer(class SankeyDiagram extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

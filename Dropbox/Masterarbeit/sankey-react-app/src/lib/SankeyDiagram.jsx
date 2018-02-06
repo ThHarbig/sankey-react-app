@@ -49,11 +49,11 @@ const SankeyDiagram = observer(class SankeyDiagram extends React.Component {
             w = this.state.width - (margin.left + margin.right),
             h = this.props.height - (margin.top + margin.bottom);
         const color = d3.scaleOrdinal(d3.schemeCategory10);
-        const colorNodes = this.props.data.data.nodes.map(function (d) {
+        const colorNodes = this.props.data.nodes.map(function (d) {
             const end = d.name.indexOf("(");
             return ({"name": d.name, "color": color(d.name.substr(0, end - 1))});
         });
-        const colorLinks = this.props.data.data.links.map(function (d) {
+        const colorLinks = this.props.data.links.map(function (d) {
             return ({"source": d.source, "target": d.target, "value": d.value, "color": "lightgray"})
         });
         return (

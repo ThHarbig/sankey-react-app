@@ -1,1 +1,443 @@
-[{"category": "CANCER_TYPE_DETAILED", "data": {"links": [{"source": 0, "value": 1, "target": 1}, {"source": 2, "value": 5, "target": 1}, {"source": 3, "value": 1, "target": 4}, {"source": 2, "value": 6, "target": 4}, {"source": 2, "value": 4, "target": 5}, {"source": 3, "value": 3, "target": 1}, {"source": 3, "value": 3, "target": 6}, {"source": 4, "value": 1, "target": 7}, {"source": 5, "value": 1, "target": 8}, {"source": 7, "value": 1, "target": 9}], "nodes": [{"name": "Oligodendroglioma (timepoint 0)"}, {"name": "Glioblastoma (timepoint 1)"}, {"name": "Astrocytoma (timepoint 0)"}, {"name": "Oligoastrocytoma (timepoint 0)"}, {"name": "Anaplastic Astrocytoma (timepoint 1)"}, {"name": "Astrocytoma (timepoint 1)"}, {"name": "Oligoastrocytoma (timepoint 1)"}, {"name": "Anaplastic Astrocytoma (timepoint 2)"}, {"name": "Glioblastoma (timepoint 2)"}, {"name": "Anaplastic Astrocytoma (timepoint 3)"}]}}, {"category": "GRADE", "data": {"links": [{"source": 0, "value": 7, "target": 1}, {"source": 0, "value": 9, "target": 2}, {"source": 0, "value": 7, "target": 3}, {"source": 3, "value": 1, "target": 4}, {"source": 1, "value": 1, "target": 5}, {"source": 5, "value": 1, "target": 6}], "nodes": [{"name": "II (timepoint 0)"}, {"name": "III (timepoint 1)"}, {"name": "IV (timepoint 1)"}, {"name": "II (timepoint 1)"}, {"name": "IV (timepoint 2)"}, {"name": "III (timepoint 2)"}, {"name": "III (timepoint 3)"}]}}, {"category": "IDH1_MUTATION", "data": {"links": [{"source": 0, "value": 1, "target": 1}, {"source": 2, "value": 21, "target": 3}, {"source": 4, "value": 1, "target": 5}, {"source": 3, "value": 1, "target": 6}, {"source": 5, "value": 1, "target": 7}, {"source": 7, "value": 1, "target": 8}], "nodes": [{"name": "R132G (timepoint 0)"}, {"name": "R132G (timepoint 1)"}, {"name": "R132H (timepoint 0)"}, {"name": "R132H (timepoint 1)"}, {"name": "R132C (timepoint 0)"}, {"name": "R132C (timepoint 1)"}, {"name": "R132H (timepoint 2)"}, {"name": "R132C (timepoint 2)"}, {"name": "R132C (timepoint 3)"}]}}, {"category": "MGMT_STATUS", "data": {"links": [{"source": 0, "value": 2, "target": 1}, {"source": 0, "value": 12, "target": 2}, {"source": 3, "value": 5, "target": 4}, {"source": 5, "value": 2, "target": 1}, {"source": 5, "value": 2, "target": 2}, {"source": 4, "value": 1, "target": 6}, {"source": 1, "value": 1, "target": 7}, {"source": 6, "value": 1, "target": 8}], "nodes": [{"name": "Methylated (timepoint 0)"}, {"name": "Unmethylated (timepoint 1)"}, {"name": "Methylated (timepoint 1)"}, {"name": "Unknown (timepoint 0)"}, {"name": "Unknown (timepoint 1)"}, {"name": "Unmethylated (timepoint 0)"}, {"name": "Unknown (timepoint 2)"}, {"name": "Methylated (timepoint 2)"}, {"name": "Unknown (timepoint 3)"}]}}, {"category": "NON_SILENT_MUT_TP53_ATRX_CIC_FUBP1", "data": {"links": [{"source": 0, "value": 3, "target": 1}, {"source": 2, "value": 17, "target": 3}, {"source": 4, "value": 1, "target": 5}, {"source": 6, "value": 1, "target": 7}, {"source": 6, "value": 1, "target": 3}, {"source": 1, "value": 1, "target": 8}, {"source": 3, "value": 1, "target": 9}, {"source": 8, "value": 1, "target": 10}], "nodes": [{"name": "TP53 (timepoint 0)"}, {"name": "TP53 (timepoint 1)"}, {"name": "TP53, ATRX (timepoint 0)"}, {"name": "TP53, ATRX (timepoint 1)"}, {"name": "ATRX (timepoint 0)"}, {"name": "ATRX (timepoint 1)"}, {"name": " (timepoint 0)"}, {"name": "CIC (timepoint 1)"}, {"name": "TP53 (timepoint 2)"}, {"name": "TP53, ATRX (timepoint 2)"}, {"name": "TP53 (timepoint 3)"}]}}, {"category": "STATUS_1P_19Q", "data": {"links": [{"source": 0, "value": 2, "target": 1}, {"source": 2, "value": 17, "target": 3}, {"source": 2, "value": 2, "target": 1}, {"source": 4, "value": 1, "target": 5}, {"source": 0, "value": 1, "target": 3}, {"source": 3, "value": 2, "target": 6}, {"source": 6, "value": 1, "target": 7}], "nodes": [{"name": "19q deletion (timepoint 0)"}, {"name": "19q deletion (timepoint 1)"}, {"name": "Intact (timepoint 0)"}, {"name": "Intact (timepoint 1)"}, {"name": "Co-deletion (timepoint 0)"}, {"name": "Co-deletion (timepoint 1)"}, {"name": "Intact (timepoint 2)"}, {"name": "Intact (timepoint 3)"}]}}]
+[
+  {
+    "category": "CANCER_TYPE_DETAILED",
+    "data": {
+      "links": [
+        {
+          "target": 1,
+          "value": 1,
+          "source": 0
+        },
+        {
+          "target": 3,
+          "value": 6,
+          "source": 2
+        },
+        {
+          "target": 3,
+          "value": 1,
+          "source": 4
+        },
+        {
+          "target": 1,
+          "value": 3,
+          "source": 4
+        },
+        {
+          "target": 5,
+          "value": 3,
+          "source": 4
+        },
+        {
+          "target": 1,
+          "value": 5,
+          "source": 2
+        },
+        {
+          "target": 6,
+          "value": 4,
+          "source": 2
+        },
+        {
+          "target": 7,
+          "value": 1,
+          "source": 6
+        },
+        {
+          "target": 8,
+          "value": 1,
+          "source": 3
+        },
+        {
+          "target": 9,
+          "value": 1,
+          "source": 8
+        }
+      ],
+      "nodes": [
+        {
+          "name": "Oligodendroglioma (timepoint 0)"
+        },
+        {
+          "name": "Glioblastoma (timepoint 1)"
+        },
+        {
+          "name": "Astrocytoma (timepoint 0)"
+        },
+        {
+          "name": "Anaplastic Astrocytoma (timepoint 1)"
+        },
+        {
+          "name": "Oligoastrocytoma (timepoint 0)"
+        },
+        {
+          "name": "Oligoastrocytoma (timepoint 1)"
+        },
+        {
+          "name": "Astrocytoma (timepoint 1)"
+        },
+        {
+          "name": "Glioblastoma (timepoint 2)"
+        },
+        {
+          "name": "Anaplastic Astrocytoma (timepoint 2)"
+        },
+        {
+          "name": "Anaplastic Astrocytoma (timepoint 3)"
+        }
+      ]
+    }
+  },
+  {
+    "category": "GRADE",
+    "data": {
+      "links": [
+        {
+          "target": 1,
+          "value": 7,
+          "source": 0
+        },
+        {
+          "target": 2,
+          "value": 9,
+          "source": 0
+        },
+        {
+          "target": 3,
+          "value": 7,
+          "source": 0
+        },
+        {
+          "target": 4,
+          "value": 1,
+          "source": 1
+        },
+        {
+          "target": 5,
+          "value": 1,
+          "source": 3
+        },
+        {
+          "target": 6,
+          "value": 1,
+          "source": 5
+        }
+      ],
+      "nodes": [
+        {
+          "name": "II (timepoint 0)"
+        },
+        {
+          "name": "II (timepoint 1)"
+        },
+        {
+          "name": "IV (timepoint 1)"
+        },
+        {
+          "name": "III (timepoint 1)"
+        },
+        {
+          "name": "IV (timepoint 2)"
+        },
+        {
+          "name": "III (timepoint 2)"
+        },
+        {
+          "name": "III (timepoint 3)"
+        }
+      ]
+    }
+  },
+  {
+    "category": "IDH1_MUTATION",
+    "data": {
+      "links": [
+        {
+          "target": 1,
+          "value": 21,
+          "source": 0
+        },
+        {
+          "target": 3,
+          "value": 1,
+          "source": 2
+        },
+        {
+          "target": 5,
+          "value": 1,
+          "source": 4
+        },
+        {
+          "target": 6,
+          "value": 1,
+          "source": 1
+        },
+        {
+          "target": 7,
+          "value": 1,
+          "source": 5
+        },
+        {
+          "target": 8,
+          "value": 1,
+          "source": 7
+        }
+      ],
+      "nodes": [
+        {
+          "name": "R132H (timepoint 0)"
+        },
+        {
+          "name": "R132H (timepoint 1)"
+        },
+        {
+          "name": "R132G (timepoint 0)"
+        },
+        {
+          "name": "R132G (timepoint 1)"
+        },
+        {
+          "name": "R132C (timepoint 0)"
+        },
+        {
+          "name": "R132C (timepoint 1)"
+        },
+        {
+          "name": "R132H (timepoint 2)"
+        },
+        {
+          "name": "R132C (timepoint 2)"
+        },
+        {
+          "name": "R132C (timepoint 3)"
+        }
+      ]
+    }
+  },
+  {
+    "category": "MGMT_STATUS",
+    "data": {
+      "links": [
+        {
+          "target": 1,
+          "value": 12,
+          "source": 0
+        },
+        {
+          "target": 1,
+          "value": 2,
+          "source": 2
+        },
+        {
+          "target": 3,
+          "value": 2,
+          "source": 2
+        },
+        {
+          "target": 5,
+          "value": 5,
+          "source": 4
+        },
+        {
+          "target": 3,
+          "value": 2,
+          "source": 0
+        },
+        {
+          "target": 6,
+          "value": 1,
+          "source": 5
+        },
+        {
+          "target": 7,
+          "value": 1,
+          "source": 3
+        },
+        {
+          "target": 8,
+          "value": 1,
+          "source": 6
+        }
+      ],
+      "nodes": [
+        {
+          "name": "Methylated (timepoint 0)"
+        },
+        {
+          "name": "Methylated (timepoint 1)"
+        },
+        {
+          "name": "Unmethylated (timepoint 0)"
+        },
+        {
+          "name": "Unmethylated (timepoint 1)"
+        },
+        {
+          "name": "Unknown (timepoint 0)"
+        },
+        {
+          "name": "Unknown (timepoint 1)"
+        },
+        {
+          "name": "Unknown (timepoint 2)"
+        },
+        {
+          "name": "Methylated (timepoint 2)"
+        },
+        {
+          "name": "Unknown (timepoint 3)"
+        }
+      ]
+    }
+  },
+  {
+    "category": "NON_SILENT_MUT_TP53_ATRX_CIC_FUBP1",
+    "data": {
+      "links": [
+        {
+          "target": 1,
+          "value": 1,
+          "source": 0
+        },
+        {
+          "target": 3,
+          "value": 3,
+          "source": 2
+        },
+        {
+          "target": 5,
+          "value": 1,
+          "source": 4
+        },
+        {
+          "target": 6,
+          "value": 1,
+          "source": 0
+        },
+        {
+          "target": 1,
+          "value": 17,
+          "source": 7
+        },
+        {
+          "target": 8,
+          "value": 1,
+          "source": 1
+        },
+        {
+          "target": 9,
+          "value": 1,
+          "source": 3
+        },
+        {
+          "target": 10,
+          "value": 1,
+          "source": 9
+        }
+      ],
+      "nodes": [
+        {
+          "name": " (timepoint 0)"
+        },
+        {
+          "name": "TP53, ATRX (timepoint 1)"
+        },
+        {
+          "name": "TP53 (timepoint 0)"
+        },
+        {
+          "name": "TP53 (timepoint 1)"
+        },
+        {
+          "name": "ATRX (timepoint 0)"
+        },
+        {
+          "name": "ATRX (timepoint 1)"
+        },
+        {
+          "name": "CIC (timepoint 1)"
+        },
+        {
+          "name": "TP53, ATRX (timepoint 0)"
+        },
+        {
+          "name": "TP53, ATRX (timepoint 2)"
+        },
+        {
+          "name": "TP53 (timepoint 2)"
+        },
+        {
+          "name": "TP53 (timepoint 3)"
+        }
+      ]
+    }
+  },
+  {
+    "category": "STATUS_1P_19Q",
+    "data": {
+      "links": [
+        {
+          "target": 1,
+          "value": 1,
+          "source": 0
+        },
+        {
+          "target": 3,
+          "value": 1,
+          "source": 2
+        },
+        {
+          "target": 3,
+          "value": 17,
+          "source": 4
+        },
+        {
+          "target": 5,
+          "value": 2,
+          "source": 2
+        },
+        {
+          "target": 5,
+          "value": 2,
+          "source": 4
+        },
+        {
+          "target": 6,
+          "value": 2,
+          "source": 3
+        },
+        {
+          "target": 7,
+          "value": 1,
+          "source": 6
+        }
+      ],
+      "nodes": [
+        {
+          "name": "Co-deletion (timepoint 0)"
+        },
+        {
+          "name": "Co-deletion (timepoint 1)"
+        },
+        {
+          "name": "19q deletion (timepoint 0)"
+        },
+        {
+          "name": "Intact (timepoint 1)"
+        },
+        {
+          "name": "Intact (timepoint 0)"
+        },
+        {
+          "name": "19q deletion (timepoint 1)"
+        },
+        {
+          "name": "Intact (timepoint 2)"
+        },
+        {
+          "name": "Intact (timepoint 3)"
+        }
+      ]
+    }
+  }
+]

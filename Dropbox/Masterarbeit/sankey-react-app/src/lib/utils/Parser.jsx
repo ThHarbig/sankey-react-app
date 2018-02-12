@@ -1,13 +1,90 @@
+import $ from "jquery";
+
 class Parser {
     constructor() {
         this.studyId = "";
         this.patientData = {};
+        this.mutations = [];
+        this.mutationSummary = {};
         this.counts = {};
         this.numberOfPatients = 0;
         this.numberOfSamples = 0;
         this.numberOfTimepoints = 0;
         this.sankeyCategories = [];
+        this.countsPerTP={};
     }
+    computeMutationCountsPerTimepoint(){
+        let countsPerTimepoint={0:[],1:[]};
+        for(let patient in this.patientData){
+            for(let timepoint in this.patientData[patient]["timepoints"]){
+                let reducedTimepoint=0;
+                if(timepoint!=0){
+                    reducedTimepoint=1
+                }
+                for(let sample in this.patientData[patient]["timepoints"][timepoint]){
+                    countsPerTimepoint[reducedTimepoint].push(this.patientData[patient]["timepoints"][timepoint][sample].mutationCount)
+                }
+            }
+        }
+        this.countsPerTP=countsPerTimepoint;
+    }
+    computeMutationSummary() {
+        let mutationSummary = {};
+        for (let patient in this.patientData) {
+            for (let timepoint in this.patientData[patient]["timepoints"]) {
+                if (!(timepoint in mutationSummary)) {
+                    mutationSummary[timepoint] = {}
+                }
+                for (let sample in this.patientData[patient]["timepoints"][timepoint]) {
+                    let mutations = this.getMutation(patient, timepoint, sample);
+                    this.getUniProtName(Object.keys(mutations));
+                    for (let mutation in mutations) {
+                        if (!(mutation in mutationSummary[timepoint])) {
+                            mutationSummary[timepoint][mutation] = {"#": 0}
+                        }
+                        mutationSummary[timepoint][mutation]["#"] += 1
+                    }
+                }
+            }
+        }
+        this.mutationSummary = mutationSummary
+    }
+
+    groupMutationsToSamples(rawMutationData) {
+        let sampleMutations = {};
+        rawMutationData.forEach(function (d, i) {
+            const idInformation = Parser.unravelSampleID(d.sampleId);
+            const newID = idInformation.patient + "," + idInformation.timepoint + "," + idInformation.sample;
+            if (!(newID in sampleMutations)) {
+                sampleMutations[newID] = {}
+            }
+            sampleMutations[newID][d.entrezGeneId] = {};
+            sampleMutations[newID][d.entrezGeneId]["proteinChange"] = d.proteinChange;
+            sampleMutations[newID][d.entrezGeneId]["mutationType"] = d.mutationType;
+            sampleMutations[newID][d.entrezGeneId]["functionalImpactScore"] = d.functionalImpactScore;
+        });
+        this.mutations = sampleMutations;
+    }
+
+    getUniProtName(entrezIDs) {
+        let params = {
+            'from': 'P_ENTREZGENEID',
+            'to': 'GENENAME',
+            'format': 'tab',
+            'query': entrezIDs.toString()
+        };
+        $.post("http://www.uniprot.org/uploadlists/", params)
+            .done(function (data) {
+                console.log("Data Loaded: " + data);
+            });
+
+
+    }
+
+    getMutation(patient, timepoint, sample) {
+        return this.mutations[patient + "," + timepoint + "," + sample];
+    }
+
     buildPatientStructure(data) {
         let categories = [];
         let patients = {};
@@ -24,9 +101,11 @@ class Parser {
             }
             if (!(idInformation.sample in patients[idInformation.patient]["timepoints"][idInformation.timepoint])) {
                 patients[idInformation.patient]["timepoints"][idInformation.timepoint][idInformation.sample] = {};
+                patients[idInformation.patient]["timepoints"][idInformation.timepoint][idInformation.sample]["clinicalData"] = {};
+                patients[idInformation.patient]["timepoints"][idInformation.timepoint][idInformation.sample]["name"] = d.sampleId;
                 patients[idInformation.patient]["timepoints"][idInformation.timepoint][idInformation.sample]["key"] = d.uniqueSampleKey;
             }
-            patients[idInformation.patient]["timepoints"][idInformation.timepoint][idInformation.sample][d.clinicalAttributeId] = d.value;
+            patients[idInformation.patient]["timepoints"][idInformation.timepoint][idInformation.sample]["clinicalData"][d.clinicalAttributeId] = d.value;
             if (!categories.includes(d.clinicalAttributeId)) {
                 categories.push(d.clinicalAttributeId);
             }
@@ -34,7 +113,6 @@ class Parser {
 
         });
         this.sankeyCategories = categories;
-        console.log(patients);
         return (patients);
     }
 
@@ -46,16 +124,40 @@ class Parser {
         return patients;
     }
 
+    addMutationsToSamples(patients, mutations) {
+        mutations.forEach(function (d) {
+            const idInformation = Parser.unravelSampleID(d.sampleId);
+            let mutationInformation = {};
+            mutationInformation["proteinChange"] = d.proteinChange;
+            mutationInformation["mutationType"] = d.mutationType;
+            mutationInformation["functionalImpactScore"] = d.functionalImpactScore;
+            if (!("mutations" in patients[idInformation.patient]["timepoints"][idInformation.timepoint][idInformation.sample])) {
+                patients[idInformation.patient]["timepoints"][idInformation.timepoint][idInformation.sample]["mutations"] = {};
+            }
+            patients[idInformation.patient]["timepoints"][idInformation.timepoint][idInformation.sample]["mutations"][d.entrezGeneId] = mutationInformation;
+
+        });
+        return patients;
+    }
+
     parse(studyId) {
         this.studyId = studyId;
         let patients = this.parseClinicalData();
         let counts = this.parseMutationCounts();
+        let mutations = this.parseMutations();
+        let events=this.parseClinicalEvents("P04");
+        console.log(events);
+        //this.groupMutationsToSamples(mutations);
         patients = this.addMutationCountsToSamples(patients, counts);
+        //patients=this.addMutationsToSamples(patients,mutations);
         this.patientData = patients;
         this.numberOfPatients = Object.keys(patients).length;
         this.numberOfSamples = this.getNumberOfSamples();
         this.numberOfTimepoints = this.getNumberOfTimePoints();
         this.counts = this.getCounts();
+        //this.computeMutationSummary();
+        this.computeMutationCountsPerTimepoint();
+        console.log(this.patientData);
 
     }
 
@@ -87,8 +189,8 @@ class Parser {
             for (let patient in _self.patientData) {
                 let counter = 0;
                 while (counter in _self.patientData[patient]["timepoints"] && (counter + 1) in _self.patientData[patient]["timepoints"]) {
-                    const current_state = _self.patientData[patient]["timepoints"][counter]["A"][category] + " (timepoint " + String(counter) + ")";
-                    const next_state = _self.patientData[patient]["timepoints"][counter + 1]["A"][category] + " (timepoint " + String(counter + 1) + ")";
+                    const current_state = _self.patientData[patient]["timepoints"][counter]["A"]["clinicalData"][category] + " (timepoint " + String(counter) + ")";
+                    const next_state = _self.patientData[patient]["timepoints"][counter + 1]["A"]["clinicalData"][category] + " (timepoint " + String(counter + 1) + ")";
                     if (Parser.nodesIndex(current_state, nodes) === -1) {
                         nodes.push({"name": current_state});
                     }
@@ -136,7 +238,7 @@ class Parser {
 
     parseClinicalData() {
         const xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", "http://www.cbioportal.org/api/studies/" + this.studyId + "/clinical-data?clinicalDataType=SAMPLE&projection=SUMMARY&pageSize=10000000&pageNumber=0&direction=ASC", false); // false for synchronous request
+        xmlHttp.open("GET", "http://www.cbioportal.org/api/studies/" + this.studyId + "/clinical-data?clinicalDataType=SAMPLE&projection=SUMMARY&pageSize=10000000&pageNumber=0&direction=ASC", false);
         xmlHttp.send(null);
         const data = JSON.parse(xmlHttp.responseText);
         return this.buildPatientStructure(data);
@@ -147,6 +249,19 @@ class Parser {
         xmlHttp.open("GET", "http://www.cbioportal.org/api/molecular-profiles/" + this.studyId + "_mutations/mutation-counts?sampleListId=lgg_ucsf_2014_all", false);
         xmlHttp.send(null);
         return (JSON.parse(xmlHttp.responseText));
+    }
+
+    parseMutations() {
+        const xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", "http://www.cbioportal.org/api/molecular-profiles/" + this.studyId + "_mutations/mutations?sampleListId=" + this.studyId + "_all&projection=SUMMARY&pageSize=10000000&pageNumber=0&direction=ASC", false);
+        xmlHttp.send(null);
+        return (JSON.parse(xmlHttp.responseText))
+    }
+    parseClinicalEvents(patientID){
+        const xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", "http://www.cbioportal.org/api/studies/"+this.studyId+"/patients/"+patientID+"/clinical-events?projection=SUMMARY&pageSize=10000000&pageNumber=0&direction=ASC", false);
+        xmlHttp.send(null);
+        return (JSON.parse(xmlHttp.responseText))
     }
 
     static unravelSampleID(sampleID) {
@@ -173,7 +288,7 @@ class Parser {
         else if (number == null) {
             return 1
         }
-        return Number.parseInt(number,10);
+        return Number.parseInt(number, 10);
     }
 }
 

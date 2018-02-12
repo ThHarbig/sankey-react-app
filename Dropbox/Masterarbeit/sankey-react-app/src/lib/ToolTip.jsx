@@ -10,7 +10,7 @@ const ToolTip = observer(class ToolTip extends React.Component {
             text = this.props.tooltip.data.source + " -> " + this.props.tooltip.data.target + ": \n" + this.props.tooltip.data.value;
             style = {
                 left: this.props.tooltip.pos.x,
-                top: this.props.tooltip.pos.y-450
+                top: this.props.tooltip.pos.y-400
 
             };
         }

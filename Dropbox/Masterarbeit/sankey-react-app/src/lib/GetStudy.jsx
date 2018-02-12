@@ -22,6 +22,7 @@ const GetStudy = observer(class GetStudy extends React.Component {
             this.props.dataChange.setCounts(parser.counts);
             this.props.dataChange.setParsed(true);
             this.props.dataChange.setSankeyData(parser.counts[parser.sankeyCategories[0]])
+            this.props.dataChange.setHistData(parser.countsPerTP);
         }
     }
 

@@ -6,6 +6,7 @@ import ReactDOM from "react-dom";
 import Menu from "./lib/Menu.jsx";
 import GetStudy from "./lib/GetStudy.jsx";
 import SankeyDiagram from "./lib/SankeyDiagram.jsx";
+import MultipleHist from "./lib/MultipleHist.jsx"
 import Summary from "./lib/Summary.jsx";
 import {observer} from 'mobx-react';
 import {extendObservable} from "mobx";
@@ -21,7 +22,8 @@ class DataChange {
             sankeyCategories: [],
             patientData: {},
             counts: {},
-            sankeyData: {}
+            sankeyData: {},
+            histData: {}
         });
     }
 
@@ -56,6 +58,9 @@ class DataChange {
     setParsed(parsed) {
         this.dataParsed = parsed;
     }
+    setHistData(histData){
+        this.histData=histData;
+    }
 }
 
 const dataChange = new DataChange();
@@ -81,31 +86,56 @@ const SummarizeData = observer(class SummarizeData extends React.Component {
         )
     }
 });
-const Plot = observer(class Plot extends React.Component {
-        dataAvailable() {
-            if (this.props.curr.dataParsed) {
-                return (
-                    <div>
-                        <h3>Sankey diagram</h3>
-                        <div className="bottom-right-svg">
-                            <Menu dataChange={this.props.curr}/>
-                            <SankeyDiagram id="sankeyDiagram" data={this.props.curr.sankeyData}/>
-                        </div>
-                    </div>
-                )
-            }
-            else return (
-                <div></div>
-            )
-        }
-
-        render() {
+const Sk = observer(class Sk extends React.Component {
+    dataAvailable() {
+        if (this.props.curr.dataParsed) {
             return (
-                this.dataAvailable()
+                <div>
+                    <h3>Sankey diagram</h3>
+                    <div className="bottom-right-svg">
+                        <Menu dataChange={this.props.curr}/>
+                        <SankeyDiagram id="sankeyDiagram" data={this.props.curr.sankeyData}/>
+                    </div>
+                </div>
             )
         }
+        else return (
+            <div></div>
+        )
     }
-);
+
+    render() {
+        return (
+            this.dataAvailable()
+        )
+    }
+});
+const Histograms = observer(class Histograms extends React.Component {
+    dataAvailable() {
+        if (this.props.curr.dataParsed) {
+            return (
+                <div>
+                    <h3>Histograms of Mutation Counts</h3>
+                    <div className="bottom-right-svg">
+                        <MultipleHist id="histograms" data={this.props.curr.histData}/>
+                    </div>
+                </div>
+            )
+        }
+        else return (
+            <div></div>
+        )
+    }
+
+    render() {
+        return (
+            this.dataAvailable()
+        )
+    }
+
+});
 ReactDOM.render(<StudySelection curr={dataChange}/>, document.getElementById("choosedata"));
 ReactDOM.render(<SummarizeData curr={dataChange}/>, document.getElementById("summary"));
-ReactDOM.render(<Plot curr={dataChange}/>, document.getElementById("top-line-chart"));
+ReactDOM.render(<Sk curr={dataChange}/>, document.getElementById("top-line-chart"));
+ReactDOM.render(<Histograms curr={dataChange}/>, document.getElementById("hist"));
+

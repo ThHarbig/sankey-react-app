@@ -42,14 +42,14 @@ h3 {
 }
 
 .bottom-left {
-    background-color: #3f5175;
+    background-color: white;
     border-radius: 4px;
     height: 400px;
     box-shadow: 1px 1px 1px 0px rgba(37, 41, 51, 1);
 }
 
 .bottom-right {
-    background-color: #3f5175;
+    background-color: white;
     border-radius: 4px;
     height: 400px;
 

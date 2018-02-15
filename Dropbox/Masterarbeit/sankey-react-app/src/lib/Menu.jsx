@@ -11,9 +11,9 @@ const Menu = observer(class Menu extends React.Component {
 
 
     handleClick(event) {
-        for(let key in this.props.dataChange.counts){
+        for(let key in this.props.dataChange.sankeyCounts){
             if(key===event.target.value){
-                this.props.dataChange.setSankeyData(this.props.dataChange.counts[key])
+                this.props.dataChange.setSankeyData(this.props.dataChange.sankeyCounts[key])
                 break;
             }
         }

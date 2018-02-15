@@ -3,7 +3,6 @@ import React from "react"
 
 const Summary=observer(class Summary extends React.Component{
     render(){
-        console.log(this.props.dataChange.numberOfTimepoints);
         const tpP=this.props.dataChange.numberOfTimepoints/this.props.dataChange.numberOfPatients;
         const spPpT=(this.props.dataChange.numberOfSamples/this.props.dataChange.numberOfPatients)/tpP;
         return(

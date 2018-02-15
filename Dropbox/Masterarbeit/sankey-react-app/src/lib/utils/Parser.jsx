@@ -5,13 +5,14 @@ class Parser {
         this.studyId = "";
         this.patientData = {};
         this.mutations = [];
-        this.mutationSummary = {};
-        this.counts = {};
+        this.sankeyCounts = {};
         this.numberOfPatients = 0;
         this.numberOfSamples = 0;
         this.numberOfTimepoints = 0;
         this.sankeyCategories = [];
         this.countsPerTP={};
+        this.clinicalEvents={};
+        this.sampleEvents={};
     }
     computeMutationCountsPerTimepoint(){
         let countsPerTimepoint={0:[],1:[]};
@@ -53,15 +54,13 @@ class Parser {
     groupMutationsToSamples(rawMutationData) {
         let sampleMutations = {};
         rawMutationData.forEach(function (d, i) {
-            const idInformation = Parser.unravelSampleID(d.sampleId);
-            const newID = idInformation.patient + "," + idInformation.timepoint + "," + idInformation.sample;
-            if (!(newID in sampleMutations)) {
-                sampleMutations[newID] = {}
+            if (!(d.sampleId in sampleMutations)) {
+                sampleMutations[d.sampleId] = {}
             }
-            sampleMutations[newID][d.entrezGeneId] = {};
-            sampleMutations[newID][d.entrezGeneId]["proteinChange"] = d.proteinChange;
-            sampleMutations[newID][d.entrezGeneId]["mutationType"] = d.mutationType;
-            sampleMutations[newID][d.entrezGeneId]["functionalImpactScore"] = d.functionalImpactScore;
+            sampleMutations[d.sampleId][d.entrezGeneId] = {};
+            sampleMutations[d.sampleId][d.entrezGeneId]["proteinChange"] = d.proteinChange;
+            sampleMutations[d.sampleId][d.entrezGeneId]["mutationType"] = d.mutationType;
+            sampleMutations[d.sampleId][d.entrezGeneId]["functionalImpactScore"] = d.functionalImpactScore;
         });
         this.mutations = sampleMutations;
     }
@@ -80,7 +79,34 @@ class Parser {
 
 
     }
-
+    getEvents(value){
+         let events=[];
+        for(let patient in this.clinicalEvents) {
+            const filtered = this.clinicalEvents[patient].filter(function (d) {
+                return d.eventType === value;
+            });
+            filtered.sort(function (a,b) {
+            if(a.startNumberOfDaysSinceDiagnosis>b.startNumberOfDaysSinceDiagnosis){
+                return 1;
+            }
+            if(a.startNumberOfDaysSinceDiagnosis<b.startNumberOfDaysSinceDiagnosis){
+                return -1;
+            }
+            else{
+                return 0;
+            }
+        });
+            events.push({"patient":patient,"events":filtered});
+        }
+        return events;
+    }
+    getAllClinicalEvents(){
+        let clinicalEvents={};
+        for(let patient in this.patientData){
+            clinicalEvents[patient]=this.parseClinicalEvents(patient);
+        }
+        this.clinicalEvents=clinicalEvents;
+    }
     getMutation(patient, timepoint, sample) {
         return this.mutations[patient + "," + timepoint + "," + sample];
     }
@@ -144,20 +170,18 @@ class Parser {
         this.studyId = studyId;
         let patients = this.parseClinicalData();
         let counts = this.parseMutationCounts();
-        let mutations = this.parseMutations();
-        let events=this.parseClinicalEvents("P04");
-        console.log(events);
+        //let mutations = this.parseMutations();
         //this.groupMutationsToSamples(mutations);
         patients = this.addMutationCountsToSamples(patients, counts);
         //patients=this.addMutationsToSamples(patients,mutations);
         this.patientData = patients;
+        this.getAllClinicalEvents();
         this.numberOfPatients = Object.keys(patients).length;
         this.numberOfSamples = this.getNumberOfSamples();
         this.numberOfTimepoints = this.getNumberOfTimePoints();
-        this.counts = this.getCounts();
-        //this.computeMutationSummary();
+        this.sankeyCounts = this.getCounts();
         this.computeMutationCountsPerTimepoint();
-        console.log(this.patientData);
+        this.sampleEvents={"type":"SPECIMEN","events":this.getEvents("SPECIMEN"),"color":"blue"};
 
     }
 

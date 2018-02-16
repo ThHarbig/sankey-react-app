@@ -11,18 +11,22 @@ class ObservableParser {
         this.countsPerTP= {};
 
         extendObservable(this, {
+            parsed: false,
+            //data for Summary
             numberOfTimepoints:0,
             numberOfSamples:0,
             numberOfPatients:0,
 
-            parsed: false,
-            countsFirstTP: [],
-            countsSecondTP: [],
-            clinicalCat: [],
+            //data for Histogram
+            PriHistogramData: [],
+            RecHistogramData: [],
 
+            //data for Timeline
             sampleEvents: [],
             currentEvents: [],
 
+            //data for Sankey
+            clinicalCategories: [],
             currentSankeyData:{}
         });
     }
@@ -60,7 +64,7 @@ class ObservableParser {
                                 _self.createSankeyData();
                                 _self.numberOfSamples=mutationCounts.data.length;
                                 _self.sampleEvents={"type":"SPECIMEN","events":_self.getEvents("SPECIMEN"),"color":"blue"};
-                                _self.setCurrentSankeyData(_self.clinicalCat[0]);
+                                _self.setCurrentSankeyData(_self.clinicalCategories[0]);
                                 _self.parsed=true;
 
                             }));
@@ -145,39 +149,45 @@ class ObservableParser {
      */
     buildPatientStructure(clinicalData, mutationCounts) {
         const _self = this;
+        let sampleStructure={};
+        let countsFirstTP=[];
+        let countsSecondTP=[];
+        let clinicalCat=[];
         this.patients.forEach(function (d) {
-            _self.sampleStructure[d.patientId] = {"attributes": [], "timepoints": {}};
+            sampleStructure[d.patientId] = {"attributes": [], "timepoints": {}};
             let previousDate = -1;
             let currTP = 0;
             _self.clinicalEvents[d.patientId].forEach(function (e, i) {
                 if (e.eventType === "SPECIMEN" && e.attributes.length === 2) {
                     _self.numberOfTimepoints+=1;
                     if (e.startNumberOfDaysSinceDiagnosis === 0) {
-                        _self.countsFirstTP.push(ObservableParser.getSampleMutationCounts(mutationCounts, e.attributes[1].value));
+                        _self.PriHistogramData.push(ObservableParser.getSampleMutationCounts(mutationCounts, e.attributes[1].value));
                     }
                     else {
-                        _self.countsSecondTP.push(ObservableParser.getSampleMutationCounts(mutationCounts, e.attributes[1].value));
+                        _self.RecHistogramData.push(ObservableParser.getSampleMutationCounts(mutationCounts, e.attributes[1].value));
                     }
                     let sampleInfo = {"clinicalData": {}, "name": e.attributes[1].value};
                     let sampleClinicalData = _self.getSampleClinicalData(clinicalData, e.attributes[1].value);
                     sampleClinicalData.forEach(function (f, i) {
-                        if (_self.clinicalCat.indexOf(f.clinicalAttributeId) === -1) {
-                            _self.clinicalCat.push(f.clinicalAttributeId);
+                        if (clinicalCat.indexOf(f.clinicalAttributeId) === -1) {
+                            clinicalCat.push(f.clinicalAttributeId);
                         }
                         sampleInfo.clinicalData[f.clinicalAttributeId] = f.value;
                     });
                     if (e.startNumberOfDaysSinceDiagnosis !== previousDate) {
-                        _self.sampleStructure[d.patientId].timepoints[currTP]=[];
-                        _self.sampleStructure[d.patientId].timepoints[currTP].push(sampleInfo);
+                        sampleStructure[d.patientId].timepoints[currTP]=[];
+                        sampleStructure[d.patientId].timepoints[currTP].push(sampleInfo);
                         currTP += 1;
                     }
                     else {
-                        _self.sampleStructure[d.patientId].timepoints[currTP - 1].push(sampleInfo);
+                        sampleStructure[d.patientId].timepoints[currTP - 1].push(sampleInfo);
                     }
                     previousDate = e.startNumberOfDaysSinceDiagnosis;
                 }
             })
         });
+        this.sampleStructure=sampleStructure;
+        this.clinicalCategories=clinicalCat;
 
     }
     /**
@@ -186,7 +196,7 @@ class ObservableParser {
     createSankeyData() {
         let counts = {};
         const _self = this;
-        this.clinicalCat.forEach(function (category) {
+        this.clinicalCategories.forEach(function (category) {
             let links = [];
             let nodes = [];
             for (let patient in _self.sampleStructure) {

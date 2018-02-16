@@ -85,6 +85,7 @@ const Tl = observer(class Tl extends React.Component {
 const Histograms = observer(class Histograms extends React.Component {
     render() {
         if(parser.parsed) {
+            console.log(this.props.data);
             return (
                 <div>
                     <h3>Histograms of Mutation Counts</h3>
@@ -102,4 +103,4 @@ ReactDOM.render(<StudySelection parser={parser}/>, document.getElementById("choo
 ReactDOM.render(<SummarizeData parser={parser}/>, document.getElementById("summary"));
 ReactDOM.render(<Tl parser={parser}/>, document.getElementById("timeline"));
 ReactDOM.render(<Sk parser={parser}/>, document.getElementById("top-line-chart"));
-ReactDOM.render(<Histograms data={[parser.countsFirstTP,parser.countsSecondTP]}/>, document.getElementById("hist"));
+ReactDOM.render(<Histograms data={[parser.PriHistogramData,parser.RecHistogramData]}/>, document.getElementById("hist"));

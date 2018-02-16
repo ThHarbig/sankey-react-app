@@ -27,7 +27,7 @@ const Menu = observer(class Menu extends React.Component {
         return (
             <div>
                 <select onChange={this.handleClick}>
-                    {Menu.getOptions(this.props.parser.clinicalCat)}
+                    {Menu.getOptions(this.props.parser.clinicalCategories)}
                 </select>
             </div>
         );

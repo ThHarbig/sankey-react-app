@@ -1,14 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 import * as d3 from 'd3';
-import ReactMixins from "./utils/ReactMixins.js";
+import ReactMixins from "../utils/ReactMixins.js";
 
 
 class Axis extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     componentDidUpdate() {
         this.renderAxis();
     }
@@ -26,7 +22,7 @@ class Axis extends React.Component {
         const translatex = "translate(0," + (this.props.h) + ")";
         const translatey = "translate(-10, 0)";
         return (
-            <g className="axis" transform={this.props.axisType == 'x' ? translatex : translatey}>
+            <g className="axis" transform={this.props.axisType === 'x' ? translatex : translatey}>
             </g>
         );
     }
@@ -45,7 +41,6 @@ class Histogram extends React.Component {
             h = this.props.height - (margin.top + margin.bottom);
         const transform = 'translate(' + margin.left + ',' + margin.top + ')';
 
-        const _self = this;
         const formatCount = d3.format(",.0f");
         const x = d3.scaleLinear()
             .domain(this.props.xDomain)
@@ -53,15 +48,13 @@ class Histogram extends React.Component {
 
         const bins = d3.histogram()
             .domain([0,d3.max(this.props.data)])
-            .thresholds(x.ticks(30))
-            (this.props.data);
+            .thresholds(x.ticks(30))(this.props.data);
 
         const y = d3.scaleLinear()
             .domain([0, d3.max(bins, function (d) {
                 return d.length;
-            })])
-            .range([h, 0]);
-        let bars = bins.map(function (d, i) {
+            })]).range([h, 0]);
+        let bars = bins.map(function (d) {
             const transform = "translate(" + x(d.x0) + "," + y(d.length) + ")";
             const width = x(bins[0].x1) - x(bins[0].x0) - 1;
             const height = h - y(d.length);

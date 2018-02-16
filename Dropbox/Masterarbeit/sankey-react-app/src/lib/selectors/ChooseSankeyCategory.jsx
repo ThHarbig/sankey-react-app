@@ -11,12 +11,7 @@ const Menu = observer(class Menu extends React.Component {
 
 
     handleClick(event) {
-        for(let key in this.props.dataChange.sankeyCounts){
-            if(key===event.target.value){
-                this.props.dataChange.setSankeyData(this.props.dataChange.sankeyCounts[key])
-                break;
-            }
-        }
+        this.props.parser.setCurrentSankeyData(event.target.value);
     }
 
     static getOptions(data) {
@@ -32,7 +27,7 @@ const Menu = observer(class Menu extends React.Component {
         return (
             <div>
                 <select onChange={this.handleClick}>
-                    {Menu.getOptions(this.props.dataChange.sankeyCategories)}
+                    {Menu.getOptions(this.props.parser.clinicalCat)}
                 </select>
             </div>
         );

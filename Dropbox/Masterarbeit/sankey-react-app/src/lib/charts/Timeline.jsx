@@ -2,12 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom'
 import {observer} from "mobx-react"
 import * as d3 from 'd3';
-import ReactMixins from "./utils/ReactMixins.js";
+import ReactMixins from "../utils/ReactMixins.js";
 
 class Axis extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     componentDidUpdate() {
         this.renderAxis();
@@ -26,7 +23,7 @@ class Axis extends React.Component {
         const translatex = "translate(0," + (this.props.h+10) + ")";
         const translatey = "translate(-20, 0)";
         return (
-            <g className="axis" transform={this.props.axisType == 'x' ? translatex : translatey}>
+            <g className="axis" transform={this.props.axisType === 'x' ? translatex : translatey}>
             </g>
         );
     }

@@ -8,27 +8,6 @@ const ChooseEvent = observer(class ChooseEvent extends React.Component {
         this.handleCheckBoxClick = this.handleCheckBoxClick.bind(this);
     }
 
-    getEvents(value) {
-        let events = [];
-        for (let patient in this.props.dataChange.clinicalEvents) {
-            const filtered = this.props.dataChange.clinicalEvents[patient].filter(function (d) {
-                return d.eventType === value;
-            });
-            filtered.sort(function (a, b) {
-                if (a.startNumberOfDaysSinceDiagnosis > b.startNumberOfDaysSinceDiagnosis) {
-                    return 1;
-                }
-                if (a.startNumberOfDaysSinceDiagnosis < b.startNumberOfDaysSinceDiagnosis) {
-                    return -1;
-                }
-                else {
-                    return 0;
-                }
-            });
-            events.push({"patient": patient, "events": filtered});
-        }
-        return events;
-    }
 
     handleCheckBoxClick(event) {
         let color = "";
@@ -40,14 +19,16 @@ const ChooseEvent = observer(class ChooseEvent extends React.Component {
                 color = "grey";
                 break;
             case "TREATMENT":
-                color = "red"
+                color = "red";
+                break;
+            default:
+                color="black";
         }
         if (event.target.checked) {
-            let newEvents = this.getEvents(event.target.value);
-            this.props.dataChange.addEvents(event.target.value, newEvents, color);
+            this.props.parser.addEvents(event.target.value, color);
         }
         else {
-            this.props.dataChange.removeEvents(event.target.value);
+            this.props.parser.removeEvents(event.target.value);
         }
     }
 

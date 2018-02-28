@@ -23,6 +23,7 @@ const MultipleHist = observer(class MultipleHist extends React.Component {
         const transformRight = 'translate(' + (margin.left + 0.5 * w) + ',' + margin.top + ')';
         const xDomain=[0,d3.max(this.props.data[0])];
         return (
+            <div>
             <svg width={this.state.width} height={this.props.width}>
                 <g transform={transform}>
                     <g transform={transformLeft}>
@@ -33,6 +34,7 @@ const MultipleHist = observer(class MultipleHist extends React.Component {
                     </g>
                 </g>
             </svg>
+            </div>
         )
     }
 });

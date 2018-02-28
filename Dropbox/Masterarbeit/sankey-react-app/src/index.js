@@ -8,13 +8,20 @@ import {observer} from 'mobx-react';
 import ObservableParser from "./lib/utils/ObservableParser.jsx";
 
 import ChooseSankeyCategory from "./lib/selectors/ChooseSankeyCategory.jsx";
-import ChoosePatient from "./lib/selectors/ChooseEvent.jsx";
+import ChooseEvent from "./lib/selectors/ChooseEvent.jsx";
 import GetStudy from "./lib/selectors/GetStudy.jsx";
 
 import SankeyDiagram from "./lib/charts/SankeyDiagram.jsx";
 import Timeline from "./lib/charts/Timeline.jsx";
 import MultipleHist from "./lib/charts/MultipleHist.jsx"
 import Summary from "./lib/charts/Summary.jsx";
+
+//TEST
+import BarChartVictory from "./lib/Victory/BarChartVictory.jsx"
+import PieChartVictory from "./lib/Victory/PieChartVictory.jsx"
+import EventBox from "./lib/Victory/EventBox.jsx"
+import NivoBar from "./lib/nivoCharts/nivoBar.jsx"
+//TEST
 
 const parser=new ObservableParser();
 
@@ -70,9 +77,10 @@ const Tl = observer(class Tl extends React.Component {
                     <div>
                         <h3>Timeline</h3>
                         <div className="bottom-right-svg">
-                            <ChoosePatient parser={this.props.parser}/>
+                            <ChooseEvent parser={this.props.parser}/>
                             <Timeline currEvents={this.props.parser.currentEvents}
-                                      sampleEvents={this.props.parser.sampleEvents}/>
+                                      sampleEvents={this.props.parser.sampleEvents}
+                                        patientAttributes={this.props.parser.patientAttributes}/>
                         </div>
                     </div>
                 )
@@ -99,8 +107,20 @@ const Histograms = observer(class Histograms extends React.Component {
     }
 
 });
+
+//TESTING
+
+const testData = [
+  { x: "Jason", y: 10},
+  { x: "Susie", y: 5},
+  { x: "Matt", y: 20},
+  { x: "Betty", y: 30}
+];
+
+//TESTING
 ReactDOM.render(<StudySelection parser={parser}/>, document.getElementById("choosedata"));
 ReactDOM.render(<SummarizeData parser={parser}/>, document.getElementById("summary"));
 ReactDOM.render(<Tl parser={parser}/>, document.getElementById("timeline"));
 ReactDOM.render(<Sk parser={parser}/>, document.getElementById("top-line-chart"));
 ReactDOM.render(<Histograms data={[parser.PriHistogramData,parser.RecHistogramData]}/>, document.getElementById("hist"));
+//ReactDOM.render(<EventBox data={testData} width={1000} height={400}/>, document.getElementById("eventbox"));

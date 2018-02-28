@@ -168,7 +168,7 @@ h3 {
 
 }
 
-.tooltip {
+.customToolTip {
     position: absolute;
     background-color: white;
     font-size: 80%;

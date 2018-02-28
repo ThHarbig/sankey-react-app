@@ -36,7 +36,6 @@ class Histogram extends React.Component {
     }
 
     render() {
-        console.log(this.props.data);
         const margin = {top: 0, right: 20, bottom: 0, left: 20},
             w = this.props.width - (margin.left + margin.right),
             h = this.props.height - (margin.top + margin.bottom);

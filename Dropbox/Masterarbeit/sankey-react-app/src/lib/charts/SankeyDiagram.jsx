@@ -31,8 +31,8 @@ const SankeyDiagram = observer(class SankeyDiagram extends React.Component {
                     value: data.value
                 },
                 pos: {
-                    x: e.clientX,
-                    y: e.clientY
+                    x: (data.source.x0+data.target.x1)/2,
+                    y: (data.y1+data.y0)/2
                 }
             }
         });
@@ -67,6 +67,7 @@ const SankeyDiagram = observer(class SankeyDiagram extends React.Component {
                     align="left"
                     nodePadding={20}
                     onLinkMouseOver={(linkdata, event) => {
+                        console.log(linkdata,event.target);
                         this.showToolTip(linkdata, event);
                     }}
                     onLinkMouseOut={(linkdata, event) => {
@@ -75,6 +76,7 @@ const SankeyDiagram = observer(class SankeyDiagram extends React.Component {
                 >
                     <ToolTip tooltip={this.state.tooltip}/>
                 </Sankey>
+
             </div>
         );
     }

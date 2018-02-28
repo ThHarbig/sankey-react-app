@@ -1,7 +1,7 @@
 import {observer} from "mobx-react"
 import React from "react"
 
-const Summary=observer(class Summary extends React.Component{
+class Summary extends React.Component{
     render(){
         const tpP=this.props.data.numberOfTimepoints/this.props.data.numberOfPatients;
         const spPpT=(this.props.data.numberOfSamples/this.props.data.numberOfPatients)/tpP;
@@ -14,5 +14,5 @@ const Summary=observer(class Summary extends React.Component{
             </div>
         )
     }
-});
+}
 export default Summary;

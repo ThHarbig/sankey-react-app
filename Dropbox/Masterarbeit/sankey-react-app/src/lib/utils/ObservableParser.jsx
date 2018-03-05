@@ -8,6 +8,8 @@ class ObservableParser {
         this.patients = [];
         this.sampleStructure = {};
         this.clinicalEvents = {};
+        this.allClinicalEvents = [];
+        this.allClinicalData = [];
         this.countsPerTP = {};
         this.previousSortKey = {key:"AGE",order:"ascending"};
 
@@ -56,13 +58,23 @@ class ObservableParser {
                     clinicalEventRequests.push(axios.get("http://www.cbioportal.org/api/studies/" + _self.studyID + "/patients/" + patient.patientId + "/clinical-events?projection=SUMMARY&pageSize=10000000&pageNumber=0&sortBy=startNumberOfDaysSinceDiagnosis&direction=ASC"));
                     patientDataRequests.push(axios.get("http://www.cbioportal.org/api/studies/" + _self.studyID + "/patients/" + patient.patientId + "/clinical-data?projection=DETAILED&pageSize=10000000&pageNumber=0&direction=ASC"));
                 });
+                
+                _self.allClinicalData = [];
+                _self.allClinicalEvents = [];
+                
+                
                 axios.all(clinicalEventRequests)
                     .then(function (eventResults) {
                         eventResults.forEach(function (response2, i) {
+                        	_self.allClinicalEvents = _self.allClinicalEvents.concat(response2.data);
                             _self.clinicalEvents[_self.patients[i].patientId] = response2.data;
                         });
                         axios.all(patientDataRequests)
                             .then(function (patientDataResults) {
+                            
+                                patientDataResults.forEach(function (response3, i) {
+                                    _self.allClinicalData = _self.allClinicalData.concat(response3.data);
+                                });
                                 _self.setPatientAttributes(patientDataResults);
 
                                 /**

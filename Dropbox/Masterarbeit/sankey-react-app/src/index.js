@@ -16,7 +16,7 @@ import FirstChart from "./lib/charts/FirstChart.jsx";
 import MultipleHist from "./lib/charts/MultipleHist.jsx"
 import Summary from "./lib/charts/Summary.jsx";
 
-
+import StackedBarChart from "./lib/charts/StackedBarChart";
 
 const parser=new ObservableParser();
 
@@ -101,6 +101,28 @@ const Histograms = observer(class Histograms extends React.Component {
 
 });
 
+
+const StackedBars = observer(class StackedBars extends React.Component {
+    render() {
+        if(parser.parsed) {
+            return (
+                <div>
+                    <h3>Stacked bar charts</h3>
+                    <div className="stacked-svg">
+                        <StackedBarChart id="stacked-bar-chart"
+                            singlestudydata={this.props.parser.patients}
+                            patientdata={this.props.parser.allClinicalEvents}
+                            clinicalData={this.props.parser.allClinicalData}
+                        />
+                    </div>
+                </div>
+            )
+        }
+        else return null;
+    }
+
+});
+
 //TESTING
 
 const testData = [
@@ -116,4 +138,6 @@ ReactDOM.render(<SummarizeData parser={parser}/>, document.getElementById("summa
 ReactDOM.render(<Tl parser={parser}/>, document.getElementById("timeline"));
 ReactDOM.render(<Sk parser={parser}/>, document.getElementById("top-line-chart"));
 ReactDOM.render(<Histograms data={[parser.PriHistogramData,parser.RecHistogramData]}/>, document.getElementById("hist"));
+ReactDOM.render(<StackedBars parser={parser} />, document.getElementById("stacked-bar-chart"));
+
 //ReactDOM.render(<EventBox data={testData} width={1000} height={400}/>, document.getElementById("eventbox"));

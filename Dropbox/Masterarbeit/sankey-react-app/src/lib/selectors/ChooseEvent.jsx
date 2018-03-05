@@ -1,7 +1,6 @@
 import React from "react";
 import Modal from 'react-modal';
 import {observer} from "mobx-react";
-import Menu from "./ChooseSankeyCategory";
 
 const customStyles = {
     content: {
@@ -113,33 +112,22 @@ const ChooseEvent = observer(class ChooseEvent extends React.Component {
         else {
             let activeEvents=this.state.activeEvents.slice();
             activeEvents=activeEvents.filter(function (d,i) {
-                console.log(d,event.target.value);
                 return d!==event.target.value;
             });
-            console.log(activeEvents);
             this.setState({activeEvents:activeEvents});
             this.props.parser.removeEvents(event.target.value);
         }
     }
-
     changeEvents() {
         this.setState({activeEvents:[...this.state.activeEvents,this.state.buttonClicked]});
-        console.log(this.state.selected);
         this.props.parser.removeEvents(this.state.buttonClicked);
         this.props.parser.addEvents(this.state.buttonClicked, this.state.selected, ChooseEvent.getColor(this.state.buttonClicked));
         this.closeModal();
     }
-     static getOptions(data) {
-        return data.map(function (d, i) {
-            return (
-                <option key={d} value={d} >{d}</option>
-            )
-        });
-    }
     render() {
         Modal.setAppElement('body');
         return (
-            <div style={{alignItems: "center"}}>
+            <div>
                 <label style={{backgroundColor: "lightgreen"}}>Surgery<input type="checkbox" checked={this.isChecked("SURGERY")} className="checkBox"
                                                                              value="SURGERY"
                                                                              onChange={this.handleCheckBoxClick}/></label>
@@ -153,9 +141,6 @@ const ChooseEvent = observer(class ChooseEvent extends React.Component {
                                                                                onChange={this.handleCheckBoxClick}/></label>
                 <button value="TREATMENT" onClick={this.openModal}>Filter</button>
                 <br/>
-                <label>Sort by<select>
-                    {ChooseEvent.getOptions(this.props.parser.patientAttributeCategories)}
-                </select></label>
                 <Modal
                     isOpen={this.state.modalIsOpen}
                     onAfterOpen={this.afterOpenModal}

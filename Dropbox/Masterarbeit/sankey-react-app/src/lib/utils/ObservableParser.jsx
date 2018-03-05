@@ -9,6 +9,7 @@ class ObservableParser {
         this.sampleStructure = {};
         this.clinicalEvents = {};
         this.countsPerTP = {};
+        this.previousSortKey = {key:"AGE",order:"ascending"};
 
         extendObservable(this, {
 
@@ -26,8 +27,8 @@ class ObservableParser {
             sampleEvents: [],
             currentEvents: [],
             attributes: {},
-            patientAttributes:{},
-            patientAttributeCategories:{},
+            patientAttributes: [],
+            patientAttributeCategories: {},
 
             //data for Sankey
             clinicalCategories: [],
@@ -53,7 +54,7 @@ class ObservableParser {
                  */
                 this.patients.forEach(function (patient) {
                     clinicalEventRequests.push(axios.get("http://www.cbioportal.org/api/studies/" + _self.studyID + "/patients/" + patient.patientId + "/clinical-events?projection=SUMMARY&pageSize=10000000&pageNumber=0&sortBy=startNumberOfDaysSinceDiagnosis&direction=ASC"));
-                    patientDataRequests.push(axios.get("http://www.cbioportal.org/api/studies/" + _self.studyID + "/patients/" + patient.patientId + "/clinical-data?projection=SUMMARY&pageSize=10000000&pageNumber=0&direction=ASC"));
+                    patientDataRequests.push(axios.get("http://www.cbioportal.org/api/studies/" + _self.studyID + "/patients/" + patient.patientId + "/clinical-data?projection=DETAILED&pageSize=10000000&pageNumber=0&direction=ASC"));
                 });
                 axios.all(clinicalEventRequests)
                     .then(function (eventResults) {
@@ -63,7 +64,6 @@ class ObservableParser {
                         axios.all(patientDataRequests)
                             .then(function (patientDataResults) {
                                 _self.setPatientAttributes(patientDataResults);
-                                console.log(_self.patientAttributes,_self.patientAttributeCategories);
 
                                 /**
                                  * get clinical data and mutation counts
@@ -87,21 +87,30 @@ class ObservableParser {
             })
 
     }
-    setPatientAttributes(patientData){
-        let patientAttributes={};
-        let patientAttributeCategories=[];
-        patientData.forEach(function (attributes,i) {
-            patientAttributes[attributes.data[0].patientId]={};
+
+    setPatientAttributes(patientData) {
+        let patientAttributes = [];
+        let patientAttributeCategories = [];
+        patientData.forEach(function (attributes, i) {
+            let helper = {};
             attributes.data.forEach(function (attribute) {
-                patientAttributes[attributes.data[0].patientId][attribute.clinicalAttributeId]=attribute.value;
-                if(i===0){
-                    patientAttributeCategories.push(attribute.clinicalAttributeId);
+                if (i === 0) {
+                    patientAttributeCategories.push({
+                        attribute: attribute.clinicalAttributeId,
+                        datatype: attribute.clinicalAttribute.datatype
+                    });
                 }
-            })
+                helper["patient"] = attribute.patientId;
+                if (attribute.clinicalAttribute.datatype === "NUMBER")
+                    helper[attribute.clinicalAttributeId] = Number(attribute.value);
+                else helper[attribute.clinicalAttributeId] = attribute.value;
+            });
+            patientAttributes.push(helper);
         });
-        this.patientAttributes=patientAttributes;
-        this.patientAttributeCategories=patientAttributeCategories;
+        this.patientAttributes = patientAttributes;
+        this.patientAttributeCategories = patientAttributeCategories;
     }
+
     /**
      * gets events of one type ("STATUS","SPECIMEN","TREATMENT",...)
      * @param value
@@ -192,6 +201,29 @@ class ObservableParser {
             }
         });
         this.currentEvents = currentEvents;
+    }
+
+    sortEvents(sortKey,order) {
+        const _self = this;
+        let firstOrder=order==="ascending"?1:-1;
+        let secondOrder=this.previousSortKey.order==="ascending"?1:-1;
+        this.patientAttributes = this.patientAttributes.sort(function (a, b) {
+            if (a[sortKey] < b[sortKey])
+                return -firstOrder;
+            if (a[sortKey] > b[sortKey])
+                return firstOrder;
+            else {
+                if (a[_self.previousSortKey.key] < b[_self.previousSortKey.key]) {
+                    return -secondOrder;
+                }
+                if (a[_self.previousSortKey.key] > b[_self.previousSortKey.key]) {
+                    return secondOrder;
+                }
+                return 0;
+            }
+        });
+            this.previousSortKey = {key: sortKey, order: order};
+
     }
 
     /**

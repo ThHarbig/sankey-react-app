@@ -12,16 +12,11 @@ import ChooseEvent from "./lib/selectors/ChooseEvent.jsx";
 import GetStudy from "./lib/selectors/GetStudy.jsx";
 
 import SankeyDiagram from "./lib/charts/SankeyDiagram.jsx";
-import Timeline from "./lib/charts/Timeline.jsx";
+import FirstChart from "./lib/charts/FirstChart.jsx";
 import MultipleHist from "./lib/charts/MultipleHist.jsx"
 import Summary from "./lib/charts/Summary.jsx";
 
-//TEST
-import BarChartVictory from "./lib/Victory/BarChartVictory.jsx"
-import PieChartVictory from "./lib/Victory/PieChartVictory.jsx"
-import EventBox from "./lib/Victory/EventBox.jsx"
-import NivoBar from "./lib/nivoCharts/nivoBar.jsx"
-//TEST
+
 
 const parser=new ObservableParser();
 
@@ -78,9 +73,7 @@ const Tl = observer(class Tl extends React.Component {
                         <h3>Timeline</h3>
                         <div className="bottom-right-svg">
                             <ChooseEvent parser={this.props.parser}/>
-                            <Timeline currEvents={this.props.parser.currentEvents}
-                                      sampleEvents={this.props.parser.sampleEvents}
-                                        patientAttributes={this.props.parser.patientAttributes}/>
+                            <FirstChart parser={this.props.parser} currentEvents={this.props.parser.currentEvents} patientAttributes={this.props.parser.patientAttributes}/>
                         </div>
                     </div>
                 )

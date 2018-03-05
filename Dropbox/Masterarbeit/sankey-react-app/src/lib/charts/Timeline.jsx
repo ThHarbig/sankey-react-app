@@ -1,59 +1,30 @@
 import React from 'react';
-import ReactDOM from 'react-dom'
 import {observer} from "mobx-react"
 import * as d3 from 'd3';
-import ReactMixins from "../utils/ReactMixins.js";
 import TimelineToolTip from "./TimelineToolTip.jsx";
+import Axis from './Axis.jsx';
 
-class Axis extends React.Component {
-
-    componentDidUpdate() {
-        this.renderAxis();
-    }
-
-    componentDidMount() {
-        this.renderAxis()
-    }
-
-    renderAxis() {
-        const node = ReactDOM.findDOMNode(this);
-        d3.select(node).call(this.props.axis);
-    }
-
-    render() {
-        const translatex = "translate(0," + (this.props.h + 10) + ")";
-        const translatey = "translate(-20, 0)";
-        return (
-            <g className="axis" transform={this.props.axisType === 'x' ? translatex : translatey}>
-            </g>
-        );
-    }
-
-}
 
 const Timeline = observer(class Timeline extends React.Component {
     constructor() {
         super();
         this.state = {
-            width: 0,
             tooltip: {display: false, data: []},
         };
         this.showToolTip = this.showToolTip.bind(this);
         this.hideToolTip = this.hideToolTip.bind(this);
-                ReactMixins.call(this);
-
     }
 
-    showToolTip(e, data,type) {
-        let pos={};
-        if(type==="rect"){
-            pos={
+    showToolTip(e, data, type) {
+        let pos = {};
+        if (type === "rect") {
+            pos = {
                 x: e.target.getAttribute("x"),
                 y: e.target.getAttribute("y")
             }
         }
-        else{
-            pos={
+        else {
+            pos = {
                 x: e.target.getAttribute("cx"),
                 y: e.target.getAttribute("cy")
             }
@@ -126,7 +97,8 @@ const Timeline = observer(class Timeline extends React.Component {
                 const transform = 'translate(' + x(f.startNumberOfDaysSinceDiagnosis) + ',' + y(d.patient) + ')';
                 if ("endNumberOfDaysSinceDiagnosis" in f) {
                     dates.push(
-                        <rect opacity={opacity} key={data.type + d.patient + "" + i} x={x(f.startNumberOfDaysSinceDiagnosis)} y={y(d.patient)-5}
+                        <rect opacity={opacity} key={data.type + d.patient + "" + i}
+                              x={x(f.startNumberOfDaysSinceDiagnosis)} y={y(d.patient) - 5}
                               height="10" width={x(f.endNumberOfDaysSinceDiagnosis - f.startNumberOfDaysSinceDiagnosis)}
                               fill={data.color} onMouseEnter={(e) => {
                             _self.showToolTip(e, f, "rect")
@@ -135,7 +107,8 @@ const Timeline = observer(class Timeline extends React.Component {
                 }
                 else {
                     dates.push(
-                        <circle opacity={opacity} key={data.type + d.patient + "" + i} cx={x(f.startNumberOfDaysSinceDiagnosis)} cy={y(d.patient)} r="5"
+                        <circle opacity={opacity} key={data.type + d.patient + "" + i}
+                                cx={x(f.startNumberOfDaysSinceDiagnosis)} cy={y(d.patient)} r="5"
                                 fill={data.color} onMouseEnter={(e) => _self.showToolTip(e, f, "circle")}
                                 onMouseLeave={_self.hideToolTip}/>
                     )
@@ -154,72 +127,38 @@ const Timeline = observer(class Timeline extends React.Component {
         });
         return dots;
     }
-    getMax(attributes,type){
-        let max=0;
-        for(let patient in attributes){
-            if(max<attributes[patient][type]){
-                max=attributes[patient][type];
+
+    getMax(attributes, type) {
+        let max = 0;
+        attributes.forEach(function (d, i) {
+            if (max < d[type]) {
+                max = d[type];
             }
-        }
-        console.log(max);
+        });
         return max;
     }
-    createBars(y,x){
-        let bars=[];
-        console.log(this.props.patientAttributes);
-        for(let patient in this.props.patientAttributes){
-            bars.push(<rect height={10} width={x(this.props.patientAttributes[patient]["AGE"])} y={y(patient)-5} fill="blue"/>)
-        }
-        return bars;
-    }
-    render() {
-        const margin = {top: 20, right: 50, bottom: 30, left: 50},
-            w = this.state.width - (margin.left + margin.right),
-            h = this.props.height - (margin.top + margin.bottom);
-        const transformTimeline = 'translate(' + margin.left + ',' + margin.top + ')';
-        const transformBars='translate(' + (margin.left+w*0.85) + ',' + margin.top + ')';
 
+    render() {
         const x = d3.scaleLinear()
             .domain([0, this.getLastTimepoint()])
-            .range([0, 0.8*w]);
-        const y = d3.scalePoint()
-            .domain(this.props.sampleEvents.events.map(function (d) {
-                return d.patient;
-            }))
-            .range([0, h]);
-         let barScale=d3.scaleLinear()
-            .domain([0, this.getMax(this.props.patientAttributes,"AGE")])
-            .range([0, 0.15*w]);
+            .range([0, this.props.width]);
         const xAxis = d3.axisBottom()
             .scale(x);
         const yAxis = d3.axisLeft()
-            .scale(y);
-        const barAxis=d3.axisBottom()
-            .scale(barScale);
+            .scale(this.props.y);
         return (
-            <div>
-                <svg id={this.props.chartId} width={this.state.width} height={this.props.height}>
-                    <g transform={transformTimeline}>
-                        <Axis h={h} axis={yAxis} axisType="y"/>
-                        <Axis h={h} axis={xAxis} axisType="x"/>
-                        {this.createLines(x, y)}
-                        {this.createDots(x, y, this.props.sampleEvents, 1)}
-                        {this.createAllDots(x, y)}
-                        <TimelineToolTip tooltip={this.state.tooltip}/>
-                    </g>
-                    <g transform={transformBars}>
-                        {this.createBars(y,barScale)}
-                        <Axis h={h} axis={barAxis} axisType="x"/>
-                    </g>
-                </svg>
-            </div>
+            <g transform={this.props.transform}>
+                <Axis h={this.props.height} axis={yAxis} axisType="y"/>
+                <Axis h={this.props.height} axis={xAxis} axisType="x"/>
+                {this.createLines(x, this.props.y)}
+                {this.createDots(x, this.props.y, this.props.sampleEvents, 1)}
+                {this.createAllDots(x, this.props.y)}
+                <TimelineToolTip tooltip={this.state.tooltip}/>
+            </g>
+
         )
     }
 });
 
-Timeline.defaultProps = {
-    width: 1000,
-    height: 300,
-    chartId: 'timeline'
-};
+
 export default Timeline;

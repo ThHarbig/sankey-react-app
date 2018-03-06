@@ -1,5 +1,4 @@
 import React from 'react';
-import {observer} from "mobx-react";
 
 class SortArrow extends React.Component{
     constructor(){
@@ -16,11 +15,11 @@ class SortArrow extends React.Component{
     toggleSort(){
         if(this.state.sort==="ascending"){
             this.setState({sort:"descending"});
-            this.props.parser.sortEvents(this.props.attribute,"ascending")
+            this.props.eventStore.sortEvents(this.props.attribute,"ascending")
         }
         else{
             this.setState({sort:"ascending"});
-            this.props.parser.sortEvents(this.props.attribute,"descending")
+            this.props.eventStore.sortEvents(this.props.attribute,"descending")
         }
     }
     mouseEnter(){

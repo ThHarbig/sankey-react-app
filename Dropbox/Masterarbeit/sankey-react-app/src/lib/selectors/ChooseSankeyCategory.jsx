@@ -11,7 +11,7 @@ const Menu = observer(class Menu extends React.Component {
 
 
     handleClick(event) {
-        this.props.parser.setCurrentSankeyData(event.target.value);
+        this.props.sankeyStore.setCurrentSankeyData(event.target.value);
     }
 
     static getOptions(data) {
@@ -27,7 +27,7 @@ const Menu = observer(class Menu extends React.Component {
         return (
             <div>
                 <select onChange={this.handleClick}>
-                    {Menu.getOptions(this.props.parser.clinicalCategories)}
+                    {Menu.getOptions(this.props.sankeyStore.clinicalCategories)}
                 </select>
             </div>
         );

@@ -24,28 +24,28 @@ const FirstChart=observer(class FirstChart extends React.Component{
             h = this.props.height - (margin.top + margin.bottom);
         const transformTimeline = 'translate(' + margin.left + ',' + margin.top + ')';
         const y = d3.scalePoint()
-            .domain(this.props.parser.patientAttributes.map(function (d) {
+            .domain(this.props.patientAttributes.map(function (d) {
                 return d.patient;
             }))
             .range([0, h]);
         let metaAttributes=[];
         let arrows=[];
         let transformX=margin.left+0.63*w;
-        const step=(0.37*w)/this.props.parser.patientAttributeCategories.length;
-        this.props.parser.patientAttributeCategories.forEach(function (d,i) {
+        const step=(0.37*w)/this.props.patientAttributeCategories.length;
+        this.props.patientAttributeCategories.forEach(function (d,i) {
                 if(d.datatype==="NUMBER"){
                     const transform="translate("+transformX+","+margin.top+")";
                     const transformArrow="translate("+transformX+",0)";
                     transformX+=step;
-                    metaAttributes.push(<TimelineBars transform={transform} y={y} width={step-2} height={h} patientAttributes={_self.props.patientAttributes} attribute={d.attribute}/>);
-                    arrows.push(<SortArrow transform={transformArrow} attribute={d.attribute} parser={_self.props.parser}/>)
+                    metaAttributes.push(<TimelineBars key={d.attribute+"_BAR"} transform={transform} y={y} width={step-2} height={h} patientAttributes={_self.props.patientAttributes} attribute={d.attribute}/>);
+                    arrows.push(<SortArrow key={d.attribute+"_ARROW"} transform={transformArrow} attribute={d.attribute} eventStore={_self.props.eventStore}/>)
                 }
                 else{
                     const transform="translate("+transformX+","+margin.top+")";
                     const transformArrow="translate("+transformX+",0)";
                     transformX+=step;
-                    metaAttributes.push(<CategoricalRects transform={transform} y={y} width={step-2} height={h} patientAttributes={_self.props.patientAttributes} attribute={d.attribute}/>);
-                    arrows.push(<SortArrow transform={transformArrow} attribute={d.attribute} parser={_self.props.parser}/>)
+                    metaAttributes.push(<CategoricalRects key={d.attribute+"_RECT"} transform={transform} y={y} width={step-2} height={h} patientAttributes={_self.props.patientAttributes} attribute={d.attribute}/>);
+                    arrows.push(<SortArrow key={d.attribute+"_ARROW"} transform={transformArrow} attribute={d.attribute} eventStore={_self.props.eventStore}/>)
                 }
         });
         return(
@@ -53,7 +53,7 @@ const FirstChart=observer(class FirstChart extends React.Component{
                 <svg width={this.state.width} height={this.props.height}>
                     {metaAttributes}
                     {arrows}
-                    <Timeline transform={transformTimeline} y={y} width={0.6*w} height={h} sampleEvents={this.props.parser.sampleEvents} currEvents={this.props.currentEvents}/>
+                    <Timeline transform={transformTimeline} y={y} width={0.6*w} height={h} sampleEvents={this.props.sampleEvents} currEvents={this.props.currentEvents}/>
                 </svg>
             </div>
         )

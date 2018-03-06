@@ -5,9 +5,6 @@ import * as d3 from 'd3';
 import Axis from './Axis.jsx';
 
 const TimelineBars = observer(class TimelineBars extends React.Component {
-    constructor() {
-        super();
-    }
 
     getMax(attributes, type) {
         let max = 0;

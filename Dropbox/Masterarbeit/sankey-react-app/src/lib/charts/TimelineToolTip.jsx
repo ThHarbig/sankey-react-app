@@ -14,7 +14,7 @@ const TimelineToolTip = observer(class TimelineToolTip extends React.Component {
             width=250;
             transform="translate("+this.props.tooltip.pos.x+","+this.props.tooltip.pos.y+")";
             text = this.props.tooltip.data.map(function (d,i) {
-                return <tspan x="0" dy="1.2em">{d.key + ": " + d.value}</tspan>
+                return <tspan key={d.key+"_"+d.value} x="0" dy="1.2em">{d.key + ": " + d.value}</tspan>
             });
         }
         else {

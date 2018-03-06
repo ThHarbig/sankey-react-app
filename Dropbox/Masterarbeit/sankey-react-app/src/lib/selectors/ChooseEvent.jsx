@@ -66,7 +66,7 @@ const ChooseEvent = observer(class ChooseEvent extends React.Component {
     getAttributes(event) {
         let elements = [];
         const _self = this;
-        const attributes = this.props.parser.attributes[event];
+        const attributes = this.props.eventStore.attributes[event];
         for (let key in attributes) {
             elements.push(<h4>{key}</h4>);
             attributes[key].forEach(function (d, i) {
@@ -107,7 +107,7 @@ const ChooseEvent = observer(class ChooseEvent extends React.Component {
         const color = ChooseEvent.getColor(event.target.value);
         if (event.target.checked) {
             this.setState({activeEvents:[...this.state.activeEvents,event.target.value]});
-            this.props.parser.addEvents(event.target.value, [], color);
+            this.props.eventStore.addEvents(event.target.value, [], color);
         }
         else {
             let activeEvents=this.state.activeEvents.slice();
@@ -115,13 +115,13 @@ const ChooseEvent = observer(class ChooseEvent extends React.Component {
                 return d!==event.target.value;
             });
             this.setState({activeEvents:activeEvents});
-            this.props.parser.removeEvents(event.target.value);
+            this.props.eventStore.removeEvents(event.target.value);
         }
     }
     changeEvents() {
         this.setState({activeEvents:[...this.state.activeEvents,this.state.buttonClicked]});
-        this.props.parser.removeEvents(this.state.buttonClicked);
-        this.props.parser.addEvents(this.state.buttonClicked, this.state.selected, ChooseEvent.getColor(this.state.buttonClicked));
+        this.props.eventStore.removeEvents(this.state.buttonClicked);
+        this.props.eventStore.addEvents(this.state.buttonClicked, this.state.selected, ChooseEvent.getColor(this.state.buttonClicked));
         this.closeModal();
     }
     render() {

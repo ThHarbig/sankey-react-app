@@ -67,7 +67,6 @@ const SankeyDiagram = observer(class SankeyDiagram extends React.Component {
                     align="left"
                     nodePadding={20}
                     onLinkMouseOver={(linkdata, event) => {
-                        console.log(linkdata,event.target);
                         this.showToolTip(linkdata, event);
                     }}
                     onLinkMouseOut={(linkdata, event) => {

@@ -4,8 +4,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {observer} from 'mobx-react';
-
-import ObservableParser from "./lib/utils/ObservableParser.jsx";
+import cBioAPI from "./lib/utils/cBioAPI.jsx";
+import RootStore from "./lib/utils/RootStore.jsx";
 
 import ChooseSankeyCategory from "./lib/selectors/ChooseSankeyCategory.jsx";
 import ChooseEvent from "./lib/selectors/ChooseEvent.jsx";
@@ -15,29 +15,32 @@ import SankeyDiagram from "./lib/charts/SankeyDiagram.jsx";
 import FirstChart from "./lib/charts/FirstChart.jsx";
 import MultipleHist from "./lib/charts/MultipleHist.jsx"
 import Summary from "./lib/charts/Summary.jsx";
-
 import StackedBarChart from "./lib/charts/StackedBarChart";
 
-const parser=new ObservableParser();
+
+
+const cbioAPI = new cBioAPI();
+const rootStore = new RootStore(cbioAPI);
+
 
 const StudySelection = observer(class StudySelection extends React.Component {
     render() {
         return (
             <div>
                 <h1> Test Visualizations</h1>
-                <GetStudy dataChange={this.props.curr} parser={parser}/>
+                <GetStudy rootStore={rootStore}/>
             </div>
         )
     }
 });
 const SummarizeData = observer(class SummarizeData extends React.Component {
     render() {
-        if (parser.parsed) {
+        if (rootStore.parsed) {
             return (
                 <div>
                     <h3>Summary of the Data</h3>
                     <div className="bottom-right-svg">
-                        <Summary data={this.props.parser}/>
+                        <Summary data={rootStore.summaryStore}/>
                     </div>
                 </div>
             )
@@ -50,13 +53,13 @@ const SummarizeData = observer(class SummarizeData extends React.Component {
 });
 const Sk = observer(class Sk extends React.Component {
     render() {
-        if (parser.parsed) {
+        if (rootStore.parsed) {
             return (
                 <div>
                     <h3>Sankey diagram</h3>
                     <div className="bottom-right-svg">
-                        <ChooseSankeyCategory parser={this.props.parser}/>
-                        <SankeyDiagram id="sankeyDiagram" data={this.props.parser.currentSankeyData}/>
+                        <ChooseSankeyCategory sankeyStore={rootStore.sankeyStore}/>
+                        <SankeyDiagram id="sankeyDiagram" data={rootStore.sankeyStore.currentSankeyData}/>
                     </div>
                 </div>
             )
@@ -66,32 +69,35 @@ const Sk = observer(class Sk extends React.Component {
 
 });
 const Tl = observer(class Tl extends React.Component {
-        render() {
-            if (parser.parsed) {
-                return (
-                    <div>
-                        <h3>Timeline</h3>
-                        <div className="bottom-right-svg">
-                            <ChooseEvent parser={this.props.parser}/>
-                            <FirstChart parser={this.props.parser} currentEvents={this.props.parser.currentEvents} patientAttributes={this.props.parser.patientAttributes}/>
-                        </div>
+    render() {
+        if (rootStore.parsed) {
+            return (
+                <div>
+                    <h3>Timeline</h3>
+                    <div className="bottom-right-svg">
+                        <ChooseEvent eventStore={rootStore.eventStore}/>
+                        <FirstChart eventStore={rootStore.eventStore} currentEvents={rootStore.eventStore.currentEvents}
+                                    patientAttributes={rootStore.eventStore.patientAttributes}
+                                    patientAttributeCategories={rootStore.eventStore.patientAttributeCategories}
+                                    sampleEvents={rootStore.eventStore.sampleEvents}/>
                     </div>
-                )
-            }
-            else return (
-                null
+                </div>
             )
+        }
+        else return (
+            null
+        )
     }
 });
 const Histograms = observer(class Histograms extends React.Component {
     render() {
-        if(parser.parsed) {
-            console.log(this.props.data);
+        if (rootStore.parsed) {
             return (
                 <div>
                     <h3>Histograms of Mutation Counts</h3>
                     <div className="bottom-right-svg">
-                        <MultipleHist id="histograms" data={this.props.data}/>
+                        <MultipleHist id="histograms"
+                                      data={[rootStore.mutationCountStore.PriHistogramData, rootStore.mutationCountStore.RecHistogramData]}/>
                     </div>
                 </div>
             )
@@ -104,15 +110,15 @@ const Histograms = observer(class Histograms extends React.Component {
 
 const StackedBars = observer(class StackedBars extends React.Component {
     render() {
-        if(parser.parsed) {
+        if(rootStore.parsed) {
             return (
                 <div>
                     <h3>Stacked bar charts</h3>
                     <div className="stacked-svg">
                         <StackedBarChart id="stacked-bar-chart"
-                            singlestudydata={this.props.parser.patients}
-                            patientdata={this.props.parser.allClinicalEvents}
-                            clinicalData={this.props.parser.allClinicalData}
+                            singlestudydata={rootStore.stackedBarChartStore.patients}
+                            patientdata={rootStore.stackedBarChartStore.clinicalEvents}
+                            clinicalData={rootStore.stackedBarChartStore.clinicalPatientData}
                         />
                     </div>
                 </div>
@@ -123,21 +129,9 @@ const StackedBars = observer(class StackedBars extends React.Component {
 
 });
 
-//TESTING
-
-const testData = [
-  { x: "Jason", y: 10},
-  { x: "Susie", y: 5},
-  { x: "Matt", y: 20},
-  { x: "Betty", y: 30}
-];
-
-//TESTING
-ReactDOM.render(<StudySelection parser={parser}/>, document.getElementById("choosedata"));
-ReactDOM.render(<SummarizeData parser={parser}/>, document.getElementById("summary"));
-ReactDOM.render(<Tl parser={parser}/>, document.getElementById("timeline"));
-ReactDOM.render(<Sk parser={parser}/>, document.getElementById("top-line-chart"));
-ReactDOM.render(<Histograms data={[parser.PriHistogramData,parser.RecHistogramData]}/>, document.getElementById("hist"));
-ReactDOM.render(<StackedBars parser={parser} />, document.getElementById("stacked-bar-chart"));
-
-//ReactDOM.render(<EventBox data={testData} width={1000} height={400}/>, document.getElementById("eventbox"));
+ReactDOM.render(<StackedBars/>, document.getElementById("stacked-bar-chart"));
+ReactDOM.render(<StudySelection/>, document.getElementById("choosedata"));
+ReactDOM.render(<SummarizeData/>, document.getElementById("summary"));
+ReactDOM.render(<Tl/>, document.getElementById("timeline"));
+ReactDOM.render(<Sk/>, document.getElementById("top-line-chart"));
+ReactDOM.render(<Histograms/>, document.getElementById("hist"));

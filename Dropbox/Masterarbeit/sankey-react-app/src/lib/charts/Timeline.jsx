@@ -94,7 +94,6 @@ const Timeline = observer(class Timeline extends React.Component {
         const _self = this;
         data.events.forEach(function (d) {
             d.events.forEach(function (f, i) {
-                const transform = 'translate(' + x(f.startNumberOfDaysSinceDiagnosis) + ',' + y(d.patient) + ')';
                 if ("endNumberOfDaysSinceDiagnosis" in f) {
                     dates.push(
                         <rect opacity={opacity} key={data.type + d.patient + "" + i}

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 import * as d3 from 'd3';
-import ReactMixins from "../utils/ReactMixins.js";
+import ReactMixins from "../../../utils/ReactMixins.js";
 
 
 class Axis extends React.Component {

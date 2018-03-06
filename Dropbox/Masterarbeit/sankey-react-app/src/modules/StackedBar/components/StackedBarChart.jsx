@@ -1,6 +1,6 @@
 import React from 'react';
 import {observer} from 'mobx-react';
-import ReactMixins from "../utils/ReactMixins.js";
+import ReactMixins from "../../../utils/ReactMixins.js";
 import * as d3 from "d3";
 
 const StackedBarChart = observer(class StackedBarChart extends React.Component {

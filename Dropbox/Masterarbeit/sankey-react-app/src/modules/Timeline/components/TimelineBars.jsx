@@ -2,7 +2,7 @@ import React from 'react';
 import {observer} from "mobx-react"
 import * as d3 from 'd3';
 
-import Axis from './Axis.jsx';
+import Axis from '../../Axis.jsx';
 
 const TimelineBars = observer(class TimelineBars extends React.Component {
 

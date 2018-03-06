@@ -4,18 +4,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {observer} from 'mobx-react';
-import cBioAPI from "./lib/utils/cBioAPI.jsx";
-import RootStore from "./lib/utils/RootStore.jsx";
+import cBioAPI from "./cBioAPI.jsx";
+import RootStore from "./modules/RootStore.jsx";
 
-import ChooseSankeyCategory from "./lib/selectors/ChooseSankeyCategory.jsx";
-import ChooseEvent from "./lib/selectors/ChooseEvent.jsx";
-import GetStudy from "./lib/selectors/GetStudy.jsx";
+import ChooseSankeyCategory from "./modules/Sankey/components/ChooseSankeyCategory.jsx";
+import ChooseEvent from "./modules/Timeline/components/ChooseEvent.jsx";
+import GetStudy from "./modules/GetStudy.jsx";
 
-import SankeyDiagram from "./lib/charts/SankeyDiagram.jsx";
-import FirstChart from "./lib/charts/FirstChart.jsx";
-import MultipleHist from "./lib/charts/MultipleHist.jsx"
-import Summary from "./lib/charts/Summary.jsx";
-import StackedBarChart from "./lib/charts/StackedBarChart";
+import SankeyDiagram from "./modules/Sankey/components/SankeyDiagram.jsx";
+import FirstChart from "./modules/Timeline/components/FirstChart.jsx";
+import MultipleHist from "./modules/Histogram/components/MultipleHist.jsx"
+import Summary from "./modules/Summary/components/Summary.jsx";
+import StackedBarChart from "./modules/StackedBar/components/StackedBarChart";
 
 
 

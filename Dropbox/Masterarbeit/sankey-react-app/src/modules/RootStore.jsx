@@ -1,9 +1,9 @@
-import SummaryStore from "./SummaryStore.jsx";
-import MutationCountStore from "./MutationCountStore.jsx";
-import EventStore from "./EventStore.jsx";
-import SankeyStore from "./SankeyStore.jsx";
+import SummaryStore from "./Summary/SummaryStore.jsx";
+import MutationCountStore from "./Histogram/MutationCountStore.jsx";
+import EventStore from "./Timeline/EventStore.jsx";
+import SankeyStore from "./Sankey/SankeyStore.jsx";
 import {extendObservable} from "mobx";
-import StackedBarChartStore from "./StackedBarChartStore";
+import StackedBarChartStore from "./StackedBar/StackedBarChartStore";
 
 class RootStore {
     constructor(cbioAPI) {

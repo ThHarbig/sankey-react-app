@@ -1,7 +1,7 @@
 import React from 'react';
 import {observer} from "mobx-react"
 import * as d3 from 'd3';
-import ReactMixins from "../utils/ReactMixins.js";
+import ReactMixins from "../../../utils/ReactMixins.js";
 
 import Timeline from './Timeline.jsx';
 import TimelineBars from './TimelineBars.jsx'
